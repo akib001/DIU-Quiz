@@ -1,9 +1,9 @@
 import React from 'react'
 
-const index = () => {
+const QuizList = () => {
   return (
     <div>quiz-list</div>
   )
 }
 
-export default index;
+export default QuizList;
