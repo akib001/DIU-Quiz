@@ -1,61 +1,34 @@
-<p align="center">
-    <a href="https://bloomui.com" title="BloomUI.com">
-        <img src="https://bloomui.s3.us-east-2.amazonaws.com/tokyo-logo.png" alt="Tokyo Free Black Typescript Next.js Admin Dashboard">
-    </a>
-</p>
-<h1 align="center">
-    <b>Tokyo Free Black Typescript Next.js Admin Dashboard</b>
-    <br>
-    <a href="https://twitter.com/intent/tweet?url=https://bloomui.com&text=I like this Next.js admin dashboard">
-        <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social" />
-    </a>
-</h1>
-<div align="center">
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
+## Getting Started
 
-<a href="https://bloomui.com/product/tokyo-free-black-nextjs-typescript-material-ui-admin-dashboard/"><img src="https://bloomui.s3.us-east-2.amazonaws.com/tokyo-free-black-nextjs-typescript-material-ui-admin-dashboard.jpg" /></a>
-</div>
+First, run the development server:
 
-<a href="https://bloomui.com/product/tokyo-free-black-nextjs-typescript-material-ui-admin-dashboard/"><h3>Free Material-UI Next.js Typescript Dashboard Template with Dark Color Scheme</h3></a>
-<p>
-    Tokyo Free Black Next.js Typescript Dashboard is built using the latest industry standards and features a clean and premium design style, making use of colors and accents to improve the user experience for all included flows and pages.
-</p>
-<p>
-It is powered by Next.js, Typescript and React and contains multiple components customized on top of Material-UI – which is one of the best UI components frameworks available.</p>
-<p>
-We keep all dependencies updated to their latest stable versions. Each time we release an updated version you will be notified via the email you used to initially download the template.
-</p>
-<p>
-To discover all the features that this free React admin template has to offer, we suggest visiting the live preview we’ve set up.
-</p>
-<p>There is also a free Javascript version available, if that is what you prefer working with.</p>
+```bash
+npm run dev
+# or
+yarn dev
+```
 
----
-<h3>Updrade to PRO</h3>
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-<p>The premium version of this template comes with a lot more components, features and options making it a very powerful friend in your development endeavors. You can download a copy of it from <a href="https://bloomui.com">bloomui.com</a></p>
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
----
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-<h2>
-    Quick Start
-</h2>
-<ol>
-    <li>Make sure you have the latest stable versions for Node.js and NPM installed</li>
-    <li>Clone repository: <code>git clone https://github.com/bloomui/tokyo-free-black-nextjs-admin-dashboard.git</code></li>
-    <li>Install dependencies: Run <code>npm install</code> inside the project folder</li>
-    <li>Start dev server: After the install finishes, run <code>yarn dev</code>. A browser window will open on http://localhost:3000 where you''ll see the live preview</li>
-</ol>
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
----
+## Learn More
 
-<h2>
-    Technical Support
-</h2>
-<p>
-    You can open a support ticket by sending an email here: <a href="mailto:support@bloomui.freshdesk.com" title="Open Support Ticket">
-        support@bloomui.freshdesk.com
-    </a>
-</p>
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
