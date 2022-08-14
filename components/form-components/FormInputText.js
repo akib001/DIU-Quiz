@@ -7,8 +7,10 @@ const FormInputText = ({ name, control, label }) => {
     <Controller
       name={name}
       control={control}
+      defaultValue=''
+      rules={{ required: "field is required" , minLength: { value: 4, message: 'Quiz title must be more than 4 character'} }}
       render={({
-        field: { onChange, value },
+        field: { onChange, value},
         fieldState: { error },
         formState,
       }) => (
