@@ -115,7 +115,11 @@ function AdminDashboard(props) {
 
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar>
+      <Typography variant="h6" noWrap component="div">
+        DIU Quiz
+      </Typography>
+        </Toolbar>
       <Divider />
       <List>
         {mainNavbarItems.map((item, index) => (
@@ -160,9 +164,6 @@ function AdminDashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-          {/* <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography> */}
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -173,7 +174,9 @@ function AdminDashboard(props) {
             />
           </Search>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}
+          >
             <IconButton
               size="large"
               edge="end"
