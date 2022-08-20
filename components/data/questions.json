@@ -1,0 +1,70 @@
+{
+  "quizTitle": "Javascript",
+  "Duration": 30,
+  "questions": [
+    {
+      "question": "What is your favorite programming language?",
+      "answer1": "C Langugage",
+      "answer2": "Java",
+      "answer3": "Javascript",
+      "answer4": "Python",
+      "correctAnswer": "answer3"
+    },
+    {
+      "question": "What is React?",
+      "answer1": "Framework",
+      "answer2": "Programming Langugage",
+      "answer3": "Library",
+      "answer4": "Scripting Language",
+      "correctAnswer": "answer3"
+    },
+    {
+      "question": "What is React?",
+      "answer1": "Framework",
+      "answer2": "Programming Langugage",
+      "answer3": "Library",
+      "answer4": "Scripting Language",
+      "correctAnswer": "answer3"
+    },
+    {
+      "question": "What is React?",
+      "answer1": "Framework",
+      "answer2": "Programming Langugage",
+      "answer3": "Library",
+      "answer4": "Scripting Language",
+      "correctAnswer": "answer3"
+    },
+    {
+      "question": "What is React?",
+      "answer1": "Framework",
+      "answer2": "Programming Langugage",
+      "answer3": "Library",
+      "answer4": "Scripting Language",
+      "correctAnswer": "answer3"
+    },
+    {
+      "question": "What is React?",
+      "answer1": "Framework",
+      "answer2": "Programming Langugage",
+      "answer3": "Library",
+      "answer4": "Scripting Language",
+      "correctAnswer": "answer3"
+    },
+    {
+      "question": "What is React?",
+      "answer1": "Framework",
+      "answer2": "Programming Langugage",
+      "answer3": "Library",
+      "answer4": "Scripting Language",
+      "correctAnswer": "answer3"
+    },
+    {
+      "question": "What is Javascript?",
+      "answer1": "asd",
+      "answer2": "asdfasdf",
+      "answer3": "asddfasdf",
+      "answer4": "asdfasdfasdfsafd",
+      "correctAnswer": "answer2"
+    }
+  ]
+}

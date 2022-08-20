@@ -2,13 +2,13 @@ import { TextField } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
 
-const FormInputText = ({ name, control, label }) => {
+const FormInputNumber = ({ name, control, label }) => {
   return (
     <Controller
       name={name}
       control={control}
       defaultValue=''
-      rules={{ required: "field is required" , minLength: { value: 2, message: 'Quiz title must be more than 4 character'} }}
+      rules={{ required: {value: 'true', message: 'This field is required'}, pattern:{value: /^[0-9+-]+$/, message: 'Please type number only'} }}
       render={({
         field: { onChange, value},
         fieldState: { error },
@@ -17,6 +17,7 @@ const FormInputText = ({ name, control, label }) => {
         <TextField
           helperText={error ? error.message : null}
           error={!!error}
+          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
           onChange={onChange}
           value={value}
           fullWidth
@@ -28,4 +29,4 @@ const FormInputText = ({ name, control, label }) => {
   );
 };
 
-export default FormInputText;
+export default FormInputNumber;

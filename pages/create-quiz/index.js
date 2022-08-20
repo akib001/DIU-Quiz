@@ -1,4 +1,4 @@
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, Stack, TextField } from '@mui/material';
 import { Box, fontStyle } from '@mui/system';
 import React, { useState } from 'react';
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -7,6 +7,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import FormInputText from '../../components/form-components/FormInputText';
 import { FormInputDropdown } from '../../components/form-components/FormInputDropdown';
+import FormInputNumber from '../../components/form-components/FormInputNumber';
+import FormDatePicker from '../../components/form-components/FormDatePicker';
 
 const CreateQuiz = () => {
   const {
@@ -33,7 +35,30 @@ const CreateQuiz = () => {
 
   return (
     <Box component="form" container="true">
-      <FormInputText name="quizTitle" control={control} label="Quiz Title" />
+      <Stack spacing={3}>
+        <FormInputText name="quizTitle" control={control} label="Quiz Title" />
+        <FormInputNumber
+          name="duration"
+          control={control}
+          label="Duration in Minutes"
+        />
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <FormDatePicker
+              name="quizStartTime"
+              control={control}
+              label="Quiz Start Time"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormDatePicker
+              name="quizStartTime"
+              control={control}
+              label="Quiz End Time"
+            />
+          </Grid>
+        </Grid>
+      </Stack>
       {questions.map((field, index) => (
         <Box
           key={field.id}
@@ -80,14 +105,21 @@ const CreateQuiz = () => {
                 label="Answer 4"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <FormInputDropdown
                 name={`questions.${index}.correctAnswer`}
                 control={control}
                 label="Correct Answer"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
+              <FormInputNumber
+                name="Mark"
+                control={control}
+                label="Mark"
+              />
+            </Grid>
+            <Grid item xs={4}>
               <Button
                 variant="outlined"
                 fullWidth
