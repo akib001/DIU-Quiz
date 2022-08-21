@@ -11,8 +11,10 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
+import Countdown from "react-countdown";
 import React, { useState } from 'react';
 import questions from '../../../components/data/questions.json';
+import Coundown from '../../../components/user/Coundown';
 
 const Quiz = () => {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -71,9 +73,10 @@ const Quiz = () => {
       <Typography variant="h4" gutterBottom>
         {questions.quizTitle}
       </Typography>
-      <Typography variant="h5" gutterBottom>
-        Timer: 1: 30: 13
-      </Typography>
+      {/* <Typography variant="h5" gutterBottom>
+        <Countdown date={Date.now() + (questions.Duration*60*1000)} />
+      </Typography> */}
+      <Coundown/>
       <Typography variant="h5" gutterBottom>
         Total Answerd: {answers.length}/{questions.questions.length}
       </Typography>
