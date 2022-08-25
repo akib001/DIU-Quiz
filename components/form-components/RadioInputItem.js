@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import React from 'react';
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  padding: '0 4px 0 8px',
+  padding: '4px 4px 6px 8px',
   border: '1px solid #615d5c',
   borderRadius: '13px',
   '&:hover': {

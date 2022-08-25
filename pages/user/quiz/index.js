@@ -1,7 +1,6 @@
 import {
   Button,
   ButtonGroup,
-  Card,
   Container,
   Dialog,
   DialogActions,
@@ -12,8 +11,6 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
-  Paper,
-  Radio,
   RadioGroup,
   Typography,
 } from '@mui/material';
@@ -67,7 +64,7 @@ const Quiz = () => {
   const submitQuizHandler = () => {
     setOpen(false);
     setIsConfirm(false);
-    router.push('/result')
+    router.push('/user/quiz/result')
   }
 
   const finishHandler = () => {
@@ -142,12 +139,12 @@ const Quiz = () => {
         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
           {questions.quizTitle}
         </Typography>
-        <Box sx={{ textAlign: 'center' }}>
-          <span>Time Remaing: </span> <CountdownTimer setOpen={setOpen} timeoutAutoSubmitHandler={timeoutAutoSubmitHandler} />    
-        </Box>
-        <Typography variant="h6" gutterBottom sx={{ textAlign: 'center' }}>
+        <Box sx={{display: 'flex', justifyContent:'space-evenly'}}>
+          <CountdownTimer duration={questions.duration} setOpen={setOpen} timeoutAutoSubmitHandler={timeoutAutoSubmitHandler} />    
+        <Typography variant="h6" gutterBottom>
           Total Answerd: {answers.length}/{questions.questions.length}
         </Typography>
+        </Box>
         {/* Question */}
         <FormControl>
           <FormLabel
@@ -212,9 +209,9 @@ const Quiz = () => {
                 key={index}
                 sx={
                   index == questionIndex
-                    ? { backgroundColor: 'gray', color: 'black' }
+                    ? { backgroundColor: 'dodgerBlue', color: 'white', "&:hover": {color: 'white', backgroundColor: '#607d8b'}  }
                     : answers[index]?.answer
-                    ? { backgroundColor: 'dodgerBlue', color: 'white' }
+                    ? { backgroundColor: '#bbdefb', color: 'black', "&:hover": {color: 'black', backgroundColor: '#bdbdbd'} }
                     : {}
                 }
                 onClick={() => setQuestionIndex(index)}

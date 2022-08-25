@@ -1,6 +1,6 @@
 {
   "quizTitle": "Javascript Advance Test 2",
-  "Duration": 30,
+  "duration": 30,
   "questions": [
     {
       "question": "What is your favorite programming language?",
