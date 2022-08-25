@@ -3,6 +3,11 @@ import {
   ButtonGroup,
   Card,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -18,9 +23,11 @@ import { Box } from '@mui/system';
 import Countdown from 'react-countdown';
 import React, { useEffect, useState } from 'react';
 import questions from '../../../components/data/questions.json';
-import Coundown from '../../../components/user/Coundown';
+import CountdownTimer from '../../../components/user/CountdownTimer';
 import RadioInputItem from '../../../components/form-components/RadioInputItem';
 import { useBeforeUnload } from "react-use";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 const Quiz = () => {
@@ -29,30 +36,49 @@ const Quiz = () => {
   const [isConfirm, setIsConfirm] = useState(true);
   const [message, setMessage] = useState('Are you sure you want to leave');
 
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+
   const router = useRouter();
 
   useBeforeUnload(isConfirm, message);
 
   useEffect(() => {
-    const handler = async () => {
-      
-
+    const handler = () => {
       if (isConfirm && !window.confirm(message)) {
+        console.log('router rejected')
         throw "Route Canceled";
       }
     };
 
-    Router.events.on("routeChangeStart", handler);
+    Router.events.on("beforeHistoryChange", handler);
 
     return () => {
-      Router.events.off("routeChangeStart", handler);
-    };
+      Router.events.off("beforeHistoryChange", handler);
+    };  
   }, [isConfirm, message]);
 
-  const routeChangeHandler = () => {
-    console.log('laksdjf')
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const submitQuizHandler = () => {
+    setOpen(false);
     setIsConfirm(false);
-    router.push('/next')
+    router.push('/result')
+  }
+
+  const finishHandler = () => {
+    console.log(answers);
+    setOpen(true);
+  }
+
+  const timeoutAutoSubmitHandler = () => {
+    console.log(answers);
+    setIsConfirm(false);
+    router.push('/result')
   }
 
   let previousButton = (
@@ -79,7 +105,7 @@ const Quiz = () => {
 
   if (questionIndex == questions.questions.length - 1) {
     nextButton = (
-      <Button variant="outlined" onClick={() => console.log(answers)}>
+      <Button variant="outlined" onClick={finishHandler}>
         Finish
       </Button>
     );
@@ -113,12 +139,11 @@ const Quiz = () => {
       }}
     >
       <Box>
-        <Button onClick={routeChangeHandler}>Route Test</Button>
         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
           {questions.quizTitle}
         </Typography>
         <Box sx={{ textAlign: 'center' }}>
-          <span>Time Remaing: </span><Coundown />
+          <span>Time Remaing: </span> <CountdownTimer setOpen={setOpen} timeoutAutoSubmitHandler={timeoutAutoSubmitHandler} />    
         </Box>
         <Typography variant="h6" gutterBottom sx={{ textAlign: 'center' }}>
           Total Answerd: {answers.length}/{questions.questions.length}
@@ -200,6 +225,30 @@ const Quiz = () => {
           </ButtonGroup>
         </Box>
       </Box>
+
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+          {"Are you sure you want to finish the exam?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You can not re-attemp this exam. Please think before click on finish button.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Disagree
+          </Button>
+          <Button onClick={submitQuizHandler} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
