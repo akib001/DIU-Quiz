@@ -1,24 +1,59 @@
 import {
   Button,
   ButtonGroup,
+  Card,
   Container,
   FormControl,
   FormControlLabel,
   FormLabel,
   Grid,
+  Paper,
   Radio,
   RadioGroup,
   Typography,
 } from '@mui/material';
+import Router from "next/router";
+import { useRouter } from 'next/router';
 import { Box } from '@mui/system';
-import Countdown from "react-countdown";
-import React, { useState } from 'react';
+import Countdown from 'react-countdown';
+import React, { useEffect, useState } from 'react';
 import questions from '../../../components/data/questions.json';
 import Coundown from '../../../components/user/Coundown';
+import RadioInputItem from '../../../components/form-components/RadioInputItem';
+import { useBeforeUnload } from "react-use";
+
 
 const Quiz = () => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
+  const [isConfirm, setIsConfirm] = useState(true);
+  const [message, setMessage] = useState('Are you sure you want to leave');
+
+  const router = useRouter();
+
+  useBeforeUnload(isConfirm, message);
+
+  useEffect(() => {
+    const handler = async () => {
+      
+
+      if (isConfirm && !window.confirm(message)) {
+        throw "Route Canceled";
+      }
+    };
+
+    Router.events.on("routeChangeStart", handler);
+
+    return () => {
+      Router.events.off("routeChangeStart", handler);
+    };
+  }, [isConfirm, message]);
+
+  const routeChangeHandler = () => {
+    console.log('laksdjf')
+    setIsConfirm(false);
+    router.push('/next')
+  }
 
   let previousButton = (
     <Button
@@ -69,89 +104,101 @@ const Quiz = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        {questions.quizTitle}
-      </Typography>
-      {/* <Typography variant="h5" gutterBottom>
-        <Countdown date={Date.now() + (questions.Duration*60*1000)} />
-      </Typography> */}
-      <Coundown/>
-      <Typography variant="h5" gutterBottom>
-        Total Answerd: {answers.length}/{questions.questions.length}
-      </Typography>
-      {/* Question */}
-      <FormControl>
-        <FormLabel id="demo-row-radio-buttons-group-label">
-          {questions.questions[questionIndex].question}
-        </FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="demo-row-radio-buttons-group-label"
-          name="row-radio-buttons-group"
-          onClick={(e) => answerSaveHandler(e, questionIndex)}
-          value={
-            answers[questionIndex]?.answer ? answers[questionIndex].answer : ''
-          }
-        >
-          <FormControlLabel
-            value={questions.questions[questionIndex].answer1}
-            control={<Radio />}
-            label={questions.questions[questionIndex].answer1}
-          />
-          <FormControlLabel
-            value={questions.questions[questionIndex].answer2}
-            control={<Radio />}
-            label={questions.questions[questionIndex].answer2}
-          />
-          <FormControlLabel
-            value={questions.questions[questionIndex].answer3}
-            control={<Radio />}
-            label={questions.questions[questionIndex].answer3}
-          />
-          <FormControlLabel
-            value={questions.questions[questionIndex].answer4}
-            control={<Radio />}
-            label={questions.questions[questionIndex].answer4}
-          />
-        </RadioGroup>
-      </FormControl>
-
-      {/* Previous and Next/Finish Button */}
+    <Container
+      sx={{
+        display: 'flex',
+        height: 'calc(100vh - 105px)',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Box>
-        {previousButton}
-        {nextButton}
-      </Box>
+        <Button onClick={routeChangeHandler}>Route Test</Button>
+        <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
+          {questions.quizTitle}
+        </Typography>
+        <Box sx={{ textAlign: 'center' }}>
+          <span>Time Remaing: </span><Coundown />
+        </Box>
+        <Typography variant="h6" gutterBottom sx={{ textAlign: 'center' }}>
+          Total Answerd: {answers.length}/{questions.questions.length}
+        </Typography>
+        {/* Question */}
+        <FormControl>
+          <FormLabel
+            id="demo-row-radio-buttons-group-label"
+            sx={{ textAlign: 'center' }}
+          >
+            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', textDecoration: 'bold' }}>
+              {questions.questions[questionIndex].question}
+            </Typography>
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            onClick={(e) => answerSaveHandler(e, questionIndex)}
+            value={
+              answers[questionIndex]?.answer
+                ? answers[questionIndex].answer
+                : ''
+            }
+          >
+            <Grid container spacing={2} sx={{ padding: '1rem' }}>
+              <RadioInputItem
+                answer={questions.questions[questionIndex].answer1}
+              />
+              <RadioInputItem
+                answer={questions.questions[questionIndex].answer2}
+              />
+              <RadioInputItem
+                answer={questions.questions[questionIndex].answer3}
+              />
+              <RadioInputItem
+                answer={questions.questions[questionIndex].answer4}
+              />
+            </Grid>
+          </RadioGroup>
+        </FormControl>
 
-      {/* Question number buttons */}
+        {/* Previous and Next/Finish Button */}
+        <Box
+          sx={{ px: '1rem', display: 'flex', justifyContent: 'space-between' }}
+        >
+          {previousButton}
+          {nextButton}
+        </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'start',
-          '& > *': {
-            m: 1,
-          },
-        }}
-      >
-        <ButtonGroup size="small" aria-label="small button group">
-          {questions.questions.map((item, index) => (
-            <Button
-              key={index}
-              sx={
-                index == questionIndex
-                  ? { backgroundColor: 'gray', color: 'black' }
-                  : answers[index]?.answer
-                  ? { backgroundColor: 'dodgerBlue', color: 'white' }
-                  : {}
-              }
-              onClick={() => setQuestionIndex(index)}
-            >
-              {index + 1}
-            </Button>
-          ))}
-        </ButtonGroup>
+        {/* Question number buttons */}
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            '& > *': {
+              m: 1,
+            },
+          }}
+        >
+          <ButtonGroup size="small" aria-label="small button group">
+            {questions.questions.map((item, index) => (
+              <Button
+                key={index}
+                sx={
+                  index == questionIndex
+                    ? { backgroundColor: 'gray', color: 'black' }
+                    : answers[index]?.answer
+                    ? { backgroundColor: 'dodgerBlue', color: 'white' }
+                    : {}
+                }
+                onClick={() => setQuestionIndex(index)}
+              >
+                {index + 1}
+              </Button>
+            ))}
+          </ButtonGroup>
+        </Box>
       </Box>
     </Container>
   );
