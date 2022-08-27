@@ -47,7 +47,7 @@ function AdminDashboard(props) {
   };
 
   const handleLogout = () => {
-    dispatch(profileActions.handleAuth({}))
+    dispatch(profileActions.userLogin({}))
     setAnchorEl(null);
   }
 

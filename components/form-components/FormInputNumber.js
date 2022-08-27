@@ -3,6 +3,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 
 const FormInputNumber = ({ name, control, label }) => {
+
   return (
     <Controller
       name={name}
@@ -21,6 +22,7 @@ const FormInputNumber = ({ name, control, label }) => {
           onChange={onChange}
           value={value}
           fullWidth
+          type="number"
           label={label}
           variant="outlined"
         />

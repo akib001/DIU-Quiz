@@ -1,21 +1,27 @@
-import { Button, Grid, Stack, TextField } from '@mui/material';
-import { Box,  } from '@mui/system';
-import React from 'react';
+import { Button, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import React, { useState } from 'react';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch, Controller } from 'react-hook-form';
 import FormInputText from '../../components/form-components/FormInputText';
 import { FormInputDropdown } from '../../components/form-components/FormInputDropdown';
 import FormInputNumber from '../../components/form-components/FormInputNumber';
 import FormDatePicker from '../../components/form-components/FormDatePicker';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 const CreateQuiz = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm();
+
+  const [watchedMarkField, setWatchedMarkField] = useState('');
+  const [totalMark, setTotalMark] = useState(0);
 
   const {
     fields: questions,
@@ -26,16 +32,41 @@ const CreateQuiz = () => {
     name: 'questions',
   });
 
+  const dispatch = useDispatch();
+
+  const stateToken = useSelector((state) => state.profile.token);
+
   const addNewQuestion = () => appendQuestion();
 
-  const onSubmitHandler = (data) => console.log(data);
+  const onSubmitHandler = async (data) => {
+    console.log(data);
+    const response = await axios.post('/quiz/create-quiz', data, {
+      headers: { Authorization: 'Bearer ' + stateToken },
+    });
+    console.log(response);
+  };
 
-  // console.log(errors.textValue);
+  const watchedFields = useWatch({control, name: 'questions'});
+
+  React.useEffect(() => {
+    // let array = Object.values(watchedFields || {});
+    let sumOfMark = 0;
+    for (const key in watchedFields) {
+      if(watchedFields[key].mark) {
+        
+        const number = +watchedFields[key].mark;
+        sumOfMark += number;
+        setTotalMark(sumOfMark);
+      }
+    }
+  }, [watchedFields]);
+
 
   return (
     <Box component="form" container="true">
       <Stack spacing={3}>
-        <FormInputText name="quizTitle" control={control} label="Quiz Title" />
+        <Typography>{totalMark}</Typography>
+        <FormInputText name="title" control={control} label="Quiz Title" />
         <FormInputNumber
           name="duration"
           control={control}
@@ -44,14 +75,14 @@ const CreateQuiz = () => {
         <Grid container>
           <Grid item xs={12} md={6}>
             <FormDatePicker
-              name="quizStartTime"
+              name="startTime"
               control={control}
               label="Quiz Start Time"
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <FormDatePicker
-              name="quizStartTime"
+              name="endTime"
               control={control}
               label="Quiz End Time"
             />
@@ -71,7 +102,7 @@ const CreateQuiz = () => {
           <Grid container spacing={2} mt={1}>
             <Grid item xs={12}>
               <FormInputText
-                name={`questions.${index}.question`}
+                name={`questions.${index}.questionText`}
                 control={control}
                 label="Question"
               />
@@ -113,7 +144,7 @@ const CreateQuiz = () => {
             </Grid>
             <Grid item xs={4}>
               <FormInputNumber
-                name="Mark"
+                name={`questions.${index}.mark`}
                 control={control}
                 label="Mark"
               />

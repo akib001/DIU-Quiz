@@ -7,7 +7,7 @@ import UserDashboard from '../user/UserDashboard';
 import { Skeleton } from '@mui/material';
 import { Box } from '@mui/system';
 
-const Layout = () => {
+const Layout = (props) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ const Layout = () => {
 
     if (retrivedToken !== null && retrivedToken !== 'undefined') {
       dispatch(
-        profileActions.handleAuth({
+        profileActions.userLogin({
           token: retrivedToken,
           email: retrivedEmail,
           name: retrivedName,
@@ -40,9 +40,9 @@ const Layout = () => {
       {!loading ? (
         stateUserToken ? (
           stateUserRole == 'user' ? (
-            <UserDashboard />
+            <UserDashboard {...props} />
           ) : (
-            <AdminDashboard />
+            <AdminDashboard {...props} />
           )
         ) : (
           <Auth />

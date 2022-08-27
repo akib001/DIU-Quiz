@@ -39,7 +39,7 @@ const UserDashboard = (props) => {
   };
 
   const handleUserLogout = () => {
-    dispatch(profileActions.handleAuth({}))
+    dispatch(profileActions.userLogin({}))
     setAnchorElUser(null);
   }
 
