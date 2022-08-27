@@ -1,6 +1,6 @@
 import { Button, Grid, Stack, TextField } from '@mui/material';
-import { Box, fontStyle } from '@mui/system';
-import React, { useState } from 'react';
+import { Box,  } from '@mui/system';
+import React from 'react';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -12,7 +12,6 @@ import FormDatePicker from '../../components/form-components/FormDatePicker';
 
 const CreateQuiz = () => {
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },

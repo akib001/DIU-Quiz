@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
 
-const FormInputText = ({ name, control, label }) => {
+const FormInputText = ({ name, control, label, type = 'text' }) => {
   return (
     <Controller
       name={name}
@@ -18,6 +18,7 @@ const FormInputText = ({ name, control, label }) => {
           helperText={error ? error.message : null}
           error={!!error}
           onChange={onChange}
+          type={type}
           value={value}
           fullWidth
           label={label}

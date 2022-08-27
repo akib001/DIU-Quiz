@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
@@ -13,31 +12,117 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  CircularProgress,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
+import { useForm } from 'react-hook-form';
+import FormInputText from './form-components/FormInputText';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { profileActions } from '../store/profile-slice';
 
 const theme = createTheme();
 
-export default function Auth({ setLoggedIn }) {
+export default function Auth() {
   const [authMode, setAuthMode] = useState('user');
-
   const [isSignIn, setIsSignIn] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  const dispatch = useDispatch();
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const handleAuthMode = (event, changedMode) => {
+    setErrorMessage('');
     setAuthMode(changedMode);
   };
 
   const handleSignIn = () => {
-    setIsSignIn(prev => !prev)
+    setErrorMessage('');
+    setIsSignIn((prev) => !prev);
     console.log(isSignIn);
-  }
+  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const onSubmitHandler = async (data) => {
+    setLoading(true);
+    setErrorMessage('');
+    if (isSignIn && authMode == 'user') {
+      try {
+        const loginRes = await axios.post('/auth/user/login', {
+          ...data,
+          role: 'user',
+        });
+        dispatch(profileActions.userLogin(loginRes.data));
+        console.log('user Signed in');
+        setLoading(false);
+      } catch (error) {
+        setErrorMessage(error.response?.data.message);
+        setLoading(false);
+      }
+    }
+
+    // user Signup
+    if (!isSignIn && authMode == 'user') {
+      try {
+        await axios.put('/auth/user/signup', {
+          ...data,
+          role: 'user',
+        });
+        console.log('User Sign UP');
+
+        const loginRes = await axios.post('/auth/user/login', {
+          ...data,
+          role: 'user',
+        });
+        dispatch(profileActions.userLogin(loginRes.data));
+        setLoading(false);
+      } catch (error) {
+        setErrorMessage(error.response?.data.message);
+        setLoading(false);
+      }
+    }
+
+    if (isSignIn && authMode == 'admin') {
+      try {
+        const loginRes = await axios.post('/auth/admin/login', {
+          ...data,
+          role: 'admin',
+        });
+        dispatch(profileActions.userLogin(loginRes.data));
+        setLoading(false);
+      } catch (error) {
+        setErrorMessage(error.response?.data.message);
+        setLoading(false);
+      }
+    }
+
+    if (!isSignIn && authMode == 'admin') {
+      try {
+        await axios.put('/auth/admin/signup', {
+          ...data,
+          role: 'admin',
+        });
+        console.log('admin Sign UP');
+
+        const loginRes = await axios.post('/auth/admin/login', {
+          ...data,
+          role: 'admin',
+        });
+        dispatch(profileActions.userLogin(loginRes.data));
+        setLoading(false);
+      } catch (error) {
+        setErrorMessage(error.response?.data.message);
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -68,7 +153,7 @@ export default function Auth({ setLoggedIn }) {
               flexDirection: 'column',
               alignItems: 'center',
             }}
-          > 
+          >
             <ToggleButtonGroup
               color="primary"
               value={authMode}
@@ -86,59 +171,74 @@ export default function Auth({ setLoggedIn }) {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              {authMode == 'user' ? isSignIn ? 'User Login' : 'User Sign Up' : isSignIn ? 'Admin Login' : 'Admin Sign Up'}
+              {authMode == 'user'
+                ? isSignIn
+                  ? 'User Login'
+                  : 'User Sign Up'
+                : isSignIn
+                ? 'Admin Login'
+                : 'Admin Sign Up'}
             </Typography>
 
-            <Box
+            <Stack
+              spacing={3}
               component="form"
               noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              // onClick={handleSubmit(onSubmitHandler)}
+              sx={{ mt: 1, width: '85%' }}
             >
-              {!isSignIn &&
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Full Name"
-                name="name"
-                autoComplete="name"
-                autoFocus
-              />}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
+              {!isSignIn && (
+                <FormInputText
+                  name={'name'}
+                  control={control}
+                  label="Full Name"
+                />
+              )}
+              <FormInputText
+                name={'email'}
+                control={control}
                 label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
+                type="email"
               />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
+
+              <FormInputText
+                name={'password'}
+                control={control}
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={() => setLoggedIn(true)}
-              >
-                {isSignIn ? 'Sign In' : 'Sign Up'}
-              </Button>
+              {errorMessage && (
+                <Typography sx={{ color: 'red' }}>{errorMessage}</Typography>
+              )}
+              <Box sx={{ position: 'relative' }}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  disabled={loading}
+                  variant="contained"
+                  onClick={handleSubmit(onSubmitHandler)}
+                >
+                  {isSignIn ? 'Sign In' : 'Sign Up & Login'}
+                </Button>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: '#2563eb',
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      marginTop: '-10px',
+                      marginLeft: '-12px',
+                    }}
+                  />
+                )}
+              </Box>
+
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -146,13 +246,17 @@ export default function Auth({ setLoggedIn }) {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Button onClick={handleSignIn} sx={ {textTransform: 'none', mt: -0.5} }>
-                    {isSignIn ? "Don't have an account? Sign Up" : "Switch to Login"}
+                  <Button
+                    onClick={handleSignIn}
+                    sx={{ textTransform: 'none', mt: -0.5 }}
+                  >
+                    {isSignIn
+                      ? "Don't have an account? Sign Up"
+                      : 'Switch to Login'}
                   </Button>
                 </Grid>
               </Grid>
-  
-            </Box>
+            </Stack>
           </Box>
         </Grid>
       </Grid>
