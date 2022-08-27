@@ -22,9 +22,9 @@ const Layout = () => {
     let retrivedName = localStorage.getItem('name');
     let retrivedRole = localStorage.getItem('role');
 
-    if (retrivedToken) {
+    if (retrivedToken !== null && retrivedToken !== 'undefined') {
       dispatch(
-        profileActions.userLogin({
+        profileActions.handleAuth({
           token: retrivedToken,
           email: retrivedEmail,
           name: retrivedName,

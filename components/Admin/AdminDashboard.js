@@ -22,6 +22,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { mainNavbarItems } from './Const/adminNavBarItems';
 import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+import { profileActions } from '../../store/profile-slice';
 
 const drawerWidth = 240;
 
@@ -29,6 +31,7 @@ function AdminDashboard(props) {
   const { window } = props;
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -42,6 +45,11 @@ function AdminDashboard(props) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    dispatch(profileActions.handleAuth({}))
+    setAnchorEl(null);
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -62,6 +70,7 @@ function AdminDashboard(props) {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 

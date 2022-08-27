@@ -22,7 +22,7 @@ const profileSlice = createSlice({
     //   state.userLoggedIn = !!state.token;
     // },
 
-    userLogin(state, action) {
+    handleAuth(state, action) {
       state.token = action.payload.token;
       state.name = action.payload.name;
       state.email = action.payload.email;

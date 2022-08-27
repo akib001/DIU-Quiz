@@ -12,13 +12,16 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useSelector, useDispatch } from 'react-redux';
+import { profileActions } from '../../store/profile-slice';
 
 const pages = ['Quizzes', 'Result', 'Attend Quiz'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const UserDashboard = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,6 +37,12 @@ const UserDashboard = (props) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleUserLogout = () => {
+    dispatch(profileActions.handleAuth({}))
+    setAnchorElUser(null);
+  }
+
 
   return (
     <Box>
@@ -148,11 +157,19 @@ const UserDashboard = (props) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Account</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Dashboard</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleUserLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+
             </Menu>
           </Box>
         </Toolbar>

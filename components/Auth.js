@@ -60,7 +60,7 @@ export default function Auth() {
           ...data,
           role: 'user',
         });
-        dispatch(profileActions.userLogin(loginRes.data));
+        dispatch(profileActions.handleAuth(loginRes.data));
         console.log('user Signed in');
         setLoading(false);
       } catch (error) {
@@ -82,7 +82,7 @@ export default function Auth() {
           ...data,
           role: 'user',
         });
-        dispatch(profileActions.userLogin(loginRes.data));
+        dispatch(profileActions.handleAuth(loginRes.data));
         setLoading(false);
       } catch (error) {
         setErrorMessage(error.response?.data.message);
@@ -96,7 +96,7 @@ export default function Auth() {
           ...data,
           role: 'admin',
         });
-        dispatch(profileActions.userLogin(loginRes.data));
+        dispatch(profileActions.handleAuth(loginRes.data));
         setLoading(false);
       } catch (error) {
         setErrorMessage(error.response?.data.message);
@@ -116,7 +116,7 @@ export default function Auth() {
           ...data,
           role: 'admin',
         });
-        dispatch(profileActions.userLogin(loginRes.data));
+        dispatch(profileActions.handleAuth(loginRes.data));
         setLoading(false);
       } catch (error) {
         setErrorMessage(error.response?.data.message);
