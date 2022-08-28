@@ -64,6 +64,9 @@ const CreateQuiz = () => {
   const addNewQuestion = () => appendQuestion();
 
   const onSubmitHandler = async (data) => {
+    if(status) {
+      setOpen(true);
+    }
     console.log(data);
     const response = await axios.post('/quiz/create-quiz', data, {
       headers: { Authorization: 'Bearer ' + stateToken },
@@ -103,6 +106,7 @@ const CreateQuiz = () => {
             />
             <Box sx={{ mb: '1.8rem' }}></Box>
           </Grid>
+          {/* TODO: error controlled issue */}
           <Grid item xs={12} md={6}>
             <TextField
               id="outlined-read-only-input"
