@@ -8,7 +8,6 @@ import {
   Grid,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
@@ -24,9 +23,10 @@ import axios from 'axios';
 import { FormStatusDropdown } from '../../components/form-components/FormStatusDropdown';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import SaveIcon from '@mui/icons-material/Save';
-import AirplayIcon from '@mui/icons-material/Airplay';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import PreviewQuiz from '../../components/Admin/PreviewQuiz';
+import Router, { useRouter } from 'next/router';
 
 const CreateQuiz = () => {
   const {
@@ -35,21 +35,25 @@ const CreateQuiz = () => {
     formState: { errors },
   } = useForm();
 
+  const router = useRouter();
+
   const [totalMark, setTotalMark] = useState(0);
   const [status, setStatus] = useState(false);
-
   const [open, setOpen] = React.useState(false);
   const [previewOpen, setPreviewOpen] = React.useState(false);
+  const [quizData, setQuizData] = React.useState('');
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClose = () => {
     setOpen(false);
   };
-  // dasf
+
   const handlePreviewClose = () => {
     setPreviewOpen(false);
   };
+
   // use field array
   const {
     fields: questions,
@@ -67,35 +71,50 @@ const CreateQuiz = () => {
   const addNewQuestion = () => appendQuestion();
 
   const onSubmitHandler = async (data) => {
-    console.log("open " + open)
-    console.log("status " + status)
+    console.log('open ' + open);
+    console.log('status ' + status);
     if (open === false) {
       setOpen(true);
     }
+
+    setQuizData({ ...data, totalMark: totalMark });
 
     let response;
     // ok, publish button action
     if (status && open === true) {
       console.log(data);
-      response = await axios.post('/quiz/create-quiz', {...data, totalMark: totalMark}, {
-        headers: { Authorization: 'Bearer ' + stateToken },
-      });
+      response = await axios.post(
+        '/quiz/create-quiz',
+        { ...data, totalMark: totalMark },
+        {
+          headers: { Authorization: 'Bearer ' + stateToken },
+        }
+      );
       handleClose();
+      handlePreviewClose();
+      router.push('/quiz-list')
     }
 
-    if(!status && open === true) {
-      response = await axios.post('/quiz/create-quiz', {...data, totalMark: totalMark}, {
-        headers: { Authorization: 'Bearer ' + stateToken },
-      });
+    if (!status && open === true) {
+      response = await axios.post(
+        '/quiz/create-quiz',
+        { ...data, totalMark: totalMark },
+        {
+          headers: { Authorization: 'Bearer ' + stateToken },
+        }
+      );
       console.log(response);
       console.log('save');
       handleClose();
+      handlePreviewClose();
+      router.push('/quiz-list')
     }
   };
 
   const previewHandler = () => {
-    console.log('preview Handler')
-  }
+    console.log('preview Handler');
+    setPreviewOpen(true);
+  };
 
   const watchedFields = useWatch({ control, name: 'questions' });
   const watchedStatusField = useWatch({ control, name: 'status' });
@@ -290,8 +309,9 @@ const CreateQuiz = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {status ? "Because once you publish this quiz you won't be able to update it. Please preview it before make it active." : "You can edit the quiz anytime. Click on save quiz"}
-           
+            {status
+              ? "Because once you publish this quiz you won't be able to update it. Please preview it before make it active."
+              : 'You can edit the quiz anytime. Click on save quiz'}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -308,30 +328,36 @@ const CreateQuiz = () => {
       </Dialog>
 
       {/* Preview Quiz */}
-      {/* <Dialog
+      <Dialog
         fullScreen={fullScreen}
-        open={open}
+        open={previewOpen}
         onClose={handlePreviewClose}
-        aria-labelledby="responsive-dialog-title"
+        aria-labelledby="responsive-preview-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">
+        <DialogTitle id="responsive-preview-dialog-title">
           {'Are you sure you want to publish this quiz?'}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Because once you publish this quiz you won't be able to update it.
+          {/* <DialogContentText>
+            Because once you publish this quiz you won&apos;t be able to update it.
             Please preview it before make it active.
-          </DialogContentText>
+          </DialogContentText> */}
+          <PreviewQuiz quizData={quizData} />
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handlePreviewClose}>
             Cancel
           </Button>
-          <Button autoFocus onClick={handleSubmit(onSubmitHandler)}>
-            Ok, Publish
-          </Button>
+
+          {status ? (
+            <Button onClick={handleSubmit(onSubmitHandler)} variant="outlined">
+              Publish Quiz
+            </Button>
+          ) : (
+            <Button onClick={handleSubmit(onSubmitHandler)}>Save Quiz</Button>
+          )}
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
     </Box>
   );
 };
