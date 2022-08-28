@@ -37,10 +37,10 @@ export const FormStatusDropdown = ({
             {generateSingleOptions()}
           </Select>
         )}
-        rules={{ required: "Please choose a status"}}
+        // rules={{ required: "Please choose a status"}}
         control={control}
-        name={name}
-        defaultValue=""
+        name={name} 
+        defaultValue={false}
       />
     </FormControl>
   );

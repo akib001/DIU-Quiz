@@ -39,11 +39,16 @@ const CreateQuiz = () => {
   const [status, setStatus] = useState(false);
 
   const [open, setOpen] = React.useState(false);
+  const [previewOpen, setPreviewOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClose = () => {
     setOpen(false);
+  };
+  
+  const handlePreviewClose = () => {
+    setPreviewOpen(false);
   };
 
   const {
@@ -62,15 +67,35 @@ const CreateQuiz = () => {
   const addNewQuestion = () => appendQuestion();
 
   const onSubmitHandler = async (data) => {
-    if(status) {
+    console.log("open " + open)
+    console.log("status " + status)
+    if (open === false) {
       setOpen(true);
     }
-    console.log(data);
-    const response = await axios.post('/quiz/create-quiz', data, {
-      headers: { Authorization: 'Bearer ' + stateToken },
-    });
-    console.log(response);
+
+    let response;
+    // ok, publish button action
+    if (status && open === true) {
+      console.log(data);
+      response = await axios.post('/quiz/create-quiz', {...data, totalMark: totalMark}, {
+        headers: { Authorization: 'Bearer ' + stateToken },
+      });
+      handleClose();
+    }
+
+    if(!status && open === true) {
+      response = await axios.post('/quiz/create-quiz', {...data, totalMark: totalMark}, {
+        headers: { Authorization: 'Bearer ' + stateToken },
+      });
+      console.log(response);
+      console.log('save');
+      handleClose();
+    }
   };
+
+  const previewHandler = () => {
+    console.log('preview Handler')
+  }
 
   const watchedFields = useWatch({ control, name: 'questions' });
   const watchedStatusField = useWatch({ control, name: 'status' });
@@ -118,7 +143,7 @@ const CreateQuiz = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             <FormDatePicker
               name="startTime"
               control={control}
@@ -131,7 +156,7 @@ const CreateQuiz = () => {
               control={control}
               label="Quiz End Time"
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Stack>
       {questions.map((field, index) => (
@@ -223,15 +248,15 @@ const CreateQuiz = () => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex' }}>
-        <Button
+        {/* <Button
           startIcon={<AirplayIcon />}
-          onClick={handleSubmit(onSubmitHandler)}
+          onClick={(event) => {handleSubmit(onSubmitHandler(event))}}
           fullWidth
           variant="outlined"
           sx={{ mr: '2rem' }}
         >
           Preview
-        </Button>
+        </Button> */}
         <FormStatusDropdown name={'status'} control={control} label="Status" />
         {status ? (
           <Button
@@ -253,6 +278,7 @@ const CreateQuiz = () => {
           </Button>
         )}
       </Box>
+      {/* Publish Confirm Dialog */}
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -264,18 +290,48 @@ const CreateQuiz = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Because once you publish this quiz you won't be able to update it. Please preview it before make it active.
+            {status ? "Because once you publish this quiz you won't be able to update it. Please preview it before make it active." : "You can edit the quiz anytime. Click on save quiz"}
+           
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button  autoFocus>
+          <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button autoFocus onClick={handleClose}>
-            Ok, Publish
+          <Button autoFocus onClick={previewHandler}>
+            Preview
+          </Button>
+          <Button autoFocus onClick={handleSubmit(onSubmitHandler)}>
+            {status ? 'Ok, Publish' : 'Save Quiz'}
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Preview Quiz */}
+      {/* <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handlePreviewClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+          {'Are you sure you want to publish this quiz?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Because once you publish this quiz you won't be able to update it.
+            Please preview it before make it active.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handlePreviewClose}>
+            Cancel
+          </Button>
+          <Button autoFocus onClick={handleSubmit(onSubmitHandler)}>
+            Ok, Publish
+          </Button>
+        </DialogActions>
+      </Dialog> */}
     </Box>
   );
 };
