@@ -14,7 +14,6 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import FormInputText from '../../components/form-components/FormInputText';
 import { FormInputDropdown } from '../../components/form-components/FormInputDropdown';
@@ -24,7 +23,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { FormStatusDropdown } from '../../components/form-components/FormStatusDropdown';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import PreviewIcon from '@mui/icons-material/Preview';
 import SaveIcon from '@mui/icons-material/Save';
 import AirplayIcon from '@mui/icons-material/Airplay';
 import { useTheme } from '@mui/material/styles';
@@ -262,20 +260,19 @@ const CreateQuiz = () => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {'Are you sure you want to finish the exam?'}
+          {'Are you sure you want to publish this quiz?'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You can not re-attemp this exam. Please think before click on finish
-            button.
+            Because once you publish this quiz you won't be able to update it. Please preview it before make it active.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Disagree
-          </Button>
           <Button  autoFocus>
-            Agree
+            Cancel
+          </Button>
+          <Button autoFocus onClick={handleClose}>
+            Ok, Publish
           </Button>
         </DialogActions>
       </Dialog>
