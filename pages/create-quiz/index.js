@@ -1,27 +1,52 @@
-import { Button, Grid, Stack, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { useForm, useFieldArray, useWatch, Controller } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import FormInputText from '../../components/form-components/FormInputText';
 import { FormInputDropdown } from '../../components/form-components/FormInputDropdown';
 import FormInputNumber from '../../components/form-components/FormInputNumber';
 import FormDatePicker from '../../components/form-components/FormDatePicker';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import { FormStatusDropdown } from '../../components/form-components/FormStatusDropdown';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import PreviewIcon from '@mui/icons-material/Preview';
+import SaveIcon from '@mui/icons-material/Save';
+import AirplayIcon from '@mui/icons-material/Airplay';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const CreateQuiz = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-    watch,
   } = useForm();
 
-  const [watchedMarkField, setWatchedMarkField] = useState('');
   const [totalMark, setTotalMark] = useState(0);
+  const [status, setStatus] = useState(false);
+
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const {
     fields: questions,
@@ -46,14 +71,14 @@ const CreateQuiz = () => {
     console.log(response);
   };
 
-  const watchedFields = useWatch({control, name: 'questions'});
+  const watchedFields = useWatch({ control, name: 'questions' });
+  const watchedStatusField = useWatch({ control, name: 'status' });
 
   React.useEffect(() => {
     // let array = Object.values(watchedFields || {});
     let sumOfMark = 0;
     for (const key in watchedFields) {
-      if(watchedFields[key].mark) {
-        
+      if (watchedFields[key].mark) {
         const number = +watchedFields[key].mark;
         sumOfMark += number;
         setTotalMark(sumOfMark);
@@ -61,18 +86,36 @@ const CreateQuiz = () => {
     }
   }, [watchedFields]);
 
+  React.useEffect(() => {
+    setStatus(watchedStatusField);
+  }, [watchedStatusField]);
 
   return (
     <Box component="form" container="true">
       <Stack spacing={3}>
-        <Typography>{totalMark}</Typography>
         <FormInputText name="title" control={control} label="Quiz Title" />
-        <FormInputNumber
-          name="duration"
-          control={control}
-          label="Duration in Minutes"
-        />
         <Grid container>
+          <Grid item xs={12} md={6}>
+            <FormInputNumber
+              name="duration"
+              control={control}
+              label="Duration in Minutes"
+            />
+            <Box sx={{ mb: '1.8rem' }}></Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              id="outlined-read-only-input"
+              label="Total Mark (Auto Calculate)"
+              defaultValue="Hello World"
+              type="number"
+              value={totalMark}
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Grid>
           <Grid item xs={12} md={6}>
             <FormDatePicker
               name="startTime"
@@ -177,14 +220,61 @@ const CreateQuiz = () => {
           Add Question
         </Button>
       </Box>
-      <Button
-        startIcon={<CheckCircleOutlineIcon />}
-        onClick={handleSubmit(onSubmitHandler)}
-        fullWidth
-        variant="outlined"
+      <Box sx={{ display: 'flex' }}>
+        <Button
+          startIcon={<AirplayIcon />}
+          onClick={handleSubmit(onSubmitHandler)}
+          fullWidth
+          variant="outlined"
+          sx={{ mr: '2rem' }}
+        >
+          Preview
+        </Button>
+        <FormStatusDropdown name={'status'} control={control} label="Status" />
+        {status ? (
+          <Button
+            startIcon={<PublishedWithChangesIcon />}
+            onClick={handleSubmit(onSubmitHandler)}
+            fullWidth
+            variant="outlined"
+          >
+            Publish Quiz
+          </Button>
+        ) : (
+          <Button
+            startIcon={<SaveIcon />}
+            onClick={handleSubmit(onSubmitHandler)}
+            fullWidth
+            variant="outlined"
+          >
+            Save Quiz
+          </Button>
+        )}
+      </Box>
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
       >
-        Submit Quiz
-      </Button>
+        <DialogTitle id="responsive-dialog-title">
+          {'Are you sure you want to finish the exam?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You can not re-attemp this exam. Please think before click on finish
+            button.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Disagree
+          </Button>
+          <Button  autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

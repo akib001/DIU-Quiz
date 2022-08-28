@@ -98,7 +98,7 @@ export default function Auth() {
         });
         dispatch(profileActions.userLogin(loginRes.data));
         setLoading(false);
-      } catch (error) {
+      } catch (error) { 
         setErrorMessage(error.response?.data.message);
         setLoading(false);
       }
