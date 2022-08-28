@@ -50,7 +50,7 @@ const CreateQuiz = () => {
   const handlePreviewClose = () => {
     setPreviewOpen(false);
   };
-
+  // use field array
   const {
     fields: questions,
     append: appendQuestion,
