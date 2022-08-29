@@ -162,7 +162,7 @@ const CreateQuiz = () => {
               }}
             />
           </Grid>
-          {/* <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <FormDatePicker
               name="startTime"
               control={control}
@@ -175,7 +175,7 @@ const CreateQuiz = () => {
               control={control}
               label="Quiz End Time"
             />
-          </Grid> */}
+          </Grid>
         </Grid>
       </Stack>
       {questions.map((field, index) => (
