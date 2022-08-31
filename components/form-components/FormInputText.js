@@ -2,12 +2,12 @@ import { TextField } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
 
-const FormInputText = ({ name, control, label, type = 'text' }) => {
+const FormInputText = ({ name, control, label, type = 'text', defaultValue = '' }) => {
   return (
     <Controller
       name={name}
       control={control}
-      defaultValue=''
+      defaultValue={defaultValue}
       rules={{ required: "field is required" , minLength: { value: 2, message: 'Quiz title must be more than 4 character'} }}
       render={({
         field: { onChange, value},

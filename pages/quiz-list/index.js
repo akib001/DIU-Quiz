@@ -6,9 +6,17 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useSelector } from 'react-redux';
 import { format, parseISO } from 'date-fns';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import EditQuizPopup from '../../components/Admin/EditQuizPopup';
 
 function createData(
   id,
@@ -43,6 +51,7 @@ const QuizList = () => {
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState('');
+  const [editQuizData, setEditQuizData] = React.useState('');
 
   const stateToken = useSelector((state) => state.profile.token);
 
@@ -60,35 +69,44 @@ const QuizList = () => {
   };
 
   const deleteQuiz = React.useCallback(
-    (id) => () => {     
-        setDeleteId(id);
-        setOpenDeleteModal(true);
+    (id) => () => {
+      setDeleteId(id);
+      setOpenDeleteModal(true);
     },
-    [],
+    []
   );
 
   const editQuiz = React.useCallback(
-    (id) => () => {     
-        setDeleteId(id);
-        setOpenDeleteModal(true);
+    (id) => async () => {
+      try {
+        const { data, error } = await axios.get(`/quiz/singleQuiz/${id}`, {
+          headers: { Authorization: 'Bearer ' + stateToken },
+        });
+        setEditQuizData(data.quiz);
+      } catch (error) {
+        console.log(error);
+      }
+      setOpenEditModal(true);
     },
-    [],
+    [stateToken]
   );
 
   const confirmDeleteHandler = async () => {
-      const { data, error} = await axios.delete(`/quiz/delete/${deleteId}`, { headers: { Authorization: "Bearer " + stateToken } });
-      console.log(data.message);
-      if(error) {
-        alert(error);
-      }
-      setRows((prevRows) => prevRows.filter((row) => row.id !== deleteId));
-      handleDeleteModalClose();
-  }
-  
+    const { data, error } = await axios.delete(`/quiz/delete/${deleteId}`, {
+      headers: { Authorization: 'Bearer ' + stateToken },
+    });
+    console.log(data.message);
+    if (error) {
+      alert(error);
+    }
+    setRows((prevRows) => prevRows.filter((row) => row.id !== deleteId));
+    handleDeleteModalClose();
+  };
+
   React.useEffect(() => {
     if (data?.quiz?.length > 0) {
       data.quiz?.map((item, index) => {
-         const row = createData(
+        const row = createData(
           item._id,
           item.title,
           item.totalMark,
@@ -100,11 +118,11 @@ const QuizList = () => {
           item.status,
           format(new Date(parseISO(item.createdAt)), 'dd/MM/yy hh:mm a'),
           format(new Date(parseISO(item.updatedAt)), 'dd/MM/yy hh:mm a')
-          );
-          setRows((prev) => [...prev, row]);
-        });
-      }
-  }, [data])
+        );
+        setRows((prev) => [...prev, row]);
+      });
+    }
+  }, [data]);
 
   const columns = React.useMemo(
     () => [
@@ -124,8 +142,8 @@ const QuizList = () => {
             key={params.id}
             icon={<EditIcon />}
             label="Edit"
-            onClick={deleteQuiz(params.id)}
-          />
+            onClick={editQuiz(params.id)}
+          />,
         ],
       },
       { field: 'id', hide: true },
@@ -140,7 +158,7 @@ const QuizList = () => {
       { field: 'createdAt', headerName: 'Created At', width: 150 },
       { field: 'updatedAt', headerName: 'Last Updated At', width: 150 },
     ],
-    [deleteQuiz],
+    [deleteQuiz, editQuiz]
   );
 
   return (
@@ -160,7 +178,7 @@ const QuizList = () => {
       <Dialog
         fullScreen={fullScreen}
         open={openDeleteModal}
-        onClose={handleClose}
+        onClose={handleDeleteModalClose}
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
@@ -168,11 +186,12 @@ const QuizList = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Once you click on confirm delete button. You won&apos;t be able to recover it.
+            Once you click on confirm delete button. You won&apos;t be able to
+            recover it.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={openDeleteModal}>
+          <Button autoFocus onClick={handleDeleteModalClose}>
             Cancel
           </Button>
           <Button autoFocus onClick={confirmDeleteHandler}>
@@ -188,22 +207,18 @@ const QuizList = () => {
         onClose={handleEditModalClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">
-          {'Are you sure you want to delete this quiz?'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Once you click on confirm delete button. You won&apos;t be able to recover it.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleEditModalClose}>
+        <DialogTitle id="responsive-dialog-title">{'Edit Quiz'}</DialogTitle>
+        {/* <DialogContent> */}
+          <EditQuizPopup editQuizData={editQuizData} setOpenEditModal={setOpenEditModal} />
+        {/* </DialogContent> */}
+        {/* <DialogActions>
+          <Button autoFocus onClick={handleEditModalClose} >
             Cancel
           </Button>
-          <Button autoFocus onClick={confirmDeleteHandler}>
-            Confirm Delete
+          <Button autoFocus onClick={confirmEditHandler}>
+            Confirm Edit
           </Button>
-        </DialogActions>
+        </DialogActions> */}
       </Dialog>
     </div>
   );

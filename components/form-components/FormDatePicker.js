@@ -5,13 +5,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-const FormDatePicker = ({ name, control, label }) => {
+const FormDatePicker = ({ name, control, label, defaultValue = null }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Controller
         name={name}
         control={control}
-        defaultValue={null}
+        defaultValue={defaultValue}
         rules={{
           required: { value: 'true', message: 'This field is required' },
         }}

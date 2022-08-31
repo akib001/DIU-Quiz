@@ -2,13 +2,13 @@ import { TextField } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
 
-const FormInputNumber = ({ name, control, label }) => {
+const FormInputNumber = ({ name, control, label, defaultValue = '' }) => {
 
   return (
     <Controller
       name={name}
       control={control}
-      defaultValue=''
+      defaultValue={defaultValue}
       rules={{ required: {value: 'true', message: 'This field is required'}, pattern:{value: /^[0-9+-]+$/, message: 'Please type number only'} }}
       render={({
         field: { onChange, value},
