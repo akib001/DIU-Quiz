@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   Grid,
   Stack,
   TextField,
@@ -22,12 +19,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { FormStatusDropdown } from '../../components/form-components/FormStatusDropdown';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import SaveIcon from '@mui/icons-material/Save';
 import { useTheme } from '@mui/material/styles';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import PreviewQuiz from '../../components/Admin/PreviewQuiz';
 import { useRouter } from 'next/router';
-import { pureFinalPropsSelectorFactory } from 'react-redux/es/connect/selectorFactory';
 
 const EditQuizPopup = ({ editQuizData, setOpenEditModal }) => {
   const {
@@ -129,7 +124,7 @@ const EditQuizPopup = ({ editQuizData, setOpenEditModal }) => {
   return (
     <>
       <DialogContent>
-        <Box component="form" container="true">
+        <Box component="form" container="true" sx={{ my: '2rem' }}>
           <Stack spacing={3}>
             <FormInputText
               name="title"
@@ -309,10 +304,12 @@ const EditQuizPopup = ({ editQuizData, setOpenEditModal }) => {
           </Box>
         </Box>
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={() => setOpenEditModal(false)}>Cancel</Button>
-        <Button autoFocus onClick={handleSubmit(onSubmitHandler)}>
-          Confirm Edit
+      <DialogActions sx={{ borderTop: '1px solid #333' }}>
+        <Button variant="outlined" color="error" onClick={() => setOpenEditModal(false)}>
+          Cancel
+        </Button>
+        <Button variant="contained" endIcon={<TaskAltIcon />} onClick={handleSubmit(onSubmitHandler)}>
+          ConFirm Edit
         </Button>
       </DialogActions>
     </>

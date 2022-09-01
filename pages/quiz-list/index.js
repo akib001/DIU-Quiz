@@ -13,10 +13,15 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
+  IconButton,
+  Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import EditQuizPopup from '../../components/Admin/EditQuizPopup';
+import { Box } from '@mui/system';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function createData(
   id,
@@ -202,23 +207,28 @@ const QuizList = () => {
 
       {/* Edit Modal */}
       <Dialog
-        fullScreen={fullScreen}
+        fullScreen={true}
         open={openEditModal}
         onClose={handleEditModalClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">{'Edit Quiz'}</DialogTitle>
-        {/* <DialogContent> */}
-          <EditQuizPopup editQuizData={editQuizData} setOpenEditModal={setOpenEditModal} />
-        {/* </DialogContent> */}
-        {/* <DialogActions>
-          <Button autoFocus onClick={handleEditModalClose} >
-            Cancel
-          </Button>
-          <Button autoFocus onClick={confirmEditHandler}>
-            Confirm Edit
-          </Button>
-        </DialogActions> */}
+        <DialogTitle
+          id="responsive-dialog-title"
+          sx={{ borderBottom: '1px solid #333' }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box><Typography variant='h6'>Edit Quiz</Typography></Box>
+            <Box>
+              <IconButton aria-label="delete" onClick={() => setOpenEditModal(false)}>
+                <CancelIcon />
+              </IconButton>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <EditQuizPopup
+          editQuizData={editQuizData}
+          setOpenEditModal={setOpenEditModal}
+        />
       </Dialog>
     </div>
   );
