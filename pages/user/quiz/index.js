@@ -17,7 +17,6 @@ import {
 import Router from "next/router";
 import { useRouter } from 'next/router';
 import { Box } from '@mui/system';
-import Countdown from 'react-countdown';
 import React, { useEffect, useState } from 'react';
 import questions from '../../../components/data/questions.json';
 import CountdownTimer from '../../../components/user/CountdownTimer';
