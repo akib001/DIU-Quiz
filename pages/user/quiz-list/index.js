@@ -13,10 +13,15 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
+  Typography,
 } from '@mui/material';
+import QuizPopup from '../../../components/user/QuizPopup';
 import HexagonOutlinedIcon from '@mui/icons-material/HexagonOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';
+import { Box } from '@mui/system';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function createData(
   id,
@@ -40,7 +45,6 @@ function createData(
     duration,
     startTime,
     endTime,
-
     createdAt,
     updatedAt,
   };
@@ -50,12 +54,14 @@ const QuizList = () => {
   const [rows, setRows] = React.useState([]);
   const [openAttemptModal, setOpenAttemptModal] = React.useState(false);
   const [quizId, setQuizId] = React.useState('');
+  const [quizData, setQuizData] = React.useState('');
+  const [openQuizModal, setOpenQuizModal] = React.useState(false);
 
-  const router = useRouter();
 
   const stateToken = useSelector((state) => state.profile.token);
 
   const { data } = useSWR(['/quiz/available-quizzes', stateToken]);
+
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -64,16 +70,27 @@ const QuizList = () => {
     setOpenAttemptModal(false);
   };
 
+  const handleOpenQuizModalClose = () => {
+    setOpenQuizModal(false);
+  };
+
   const attemptQuiz = React.useCallback(
-    (id) => () => {
-      setQuizId(id);
-      setOpenAttemptModal(true);
+    (id) => async () => {
+      try {
+        const { data, error } = await axios.get(`/quiz/singleQuiz/${id}`, {
+          headers: { Authorization: 'Bearer ' + stateToken },
+        });
+        setQuizData(data.quiz);
+        setOpenAttemptModal(true);
+      } catch (error) {
+        console.log(error);
+      }
     },
-    []
+    [stateToken]
   );
 
     const confirmAttemptHandler = () => {
-      router.push(`/user/quiz/${quizId}`)
+      setOpenQuizModal(true);
       handleAttemptModalClose();
     };
 
@@ -89,7 +106,6 @@ const QuizList = () => {
           item.duration,
           format(new Date(parseISO(item.startTime)), 'dd/MM/yy hh:mm a'),
           format(new Date(parseISO(item.endTime)), 'dd/MM/yy hh:mm a'),
-
           format(new Date(parseISO(item.createdAt)), 'dd/MM/yy hh:mm a'),
           format(new Date(parseISO(item.updatedAt)), 'dd/MM/yy hh:mm a')
         );
@@ -165,6 +181,20 @@ const QuizList = () => {
             Confirm Attempt
           </Button>
         </DialogActions>
+      </Dialog>
+
+       {/* Attempt Modal */}
+       <Dialog
+        fullScreen={true}
+        open={openQuizModal}
+        onClose={handleOpenQuizModalClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        
+        <QuizPopup
+          quizData={quizData}
+          setOpenQuizModal={setOpenQuizModal}
+        /> 
       </Dialog>
     </div>
   );
