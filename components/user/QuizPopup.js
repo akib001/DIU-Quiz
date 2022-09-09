@@ -17,7 +17,9 @@ import {
   } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
-  import Router from "next/router";
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+// import Router from "next/router";
 //   import { useRouter } from 'next/router';
   import { Box } from '@mui/system';
   import React, { useEffect, useState } from 'react';
@@ -27,20 +29,22 @@ import CancelIcon from '@mui/icons-material/Cancel';
   // import { useBeforeUnload } from "react-use";
   import { useTheme } from '@mui/material/styles';
   import useMediaQuery from '@mui/material/useMediaQuery';
+import ResultsPreview from './ResultsPreview';
   
   
-  const QuizPopup = ({quizData, setOpenQuizModal}) => {
+  const QuizPopup = ({quizData, handleOpenQuizModalClose}) => {
+
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [cancelQuizPopup, setCancelQuizPopup] = useState(false);
     // const [isConfirm, setIsConfirm] = useState(true);
     // const [message, setMessage] = useState('Are you sure you want to leave');
-  
+      const stateToken = useSelector((state) => state.profile.token);
     const [open, setOpen] = React.useState(false);
+    const [results, setResults] = React.useState('');
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   
-    console.log('quizData', quizData);
     // const router = useRouter();
   
     // useBeforeUnload(isConfirm, message);
@@ -64,17 +68,37 @@ import CancelIcon from '@mui/icons-material/Cancel';
       setOpen(false);
     };
   
-    const submitQuizHandler = () => {
+    const submitQuizHandler = async () => {
+
+
       setOpen(false);
       if(cancelQuizPopup) {
         setCancelQuizPopup(false);
-        setOpenQuizModal(false);
+        handleOpenQuizModalClose();
       }
+
+      try {
+        const { data, error } = await axios.post(`/quiz/attempt-quiz`, {
+          answers: answers,
+          duration: 10,
+          quizId: quizData._id
+        }, {
+          headers: { Authorization: 'Bearer ' + stateToken }
+        });
+        console.log('data.results', data.results);
+        setResults(data.results);
+      } catch (error) {
+        console.log(error);
+      }
+      
       // setIsConfirm(false);
       // router.push('/user/quiz/result')
     }
 
     const quizCancelHandler = () => {
+      if(results) {
+        handleOpenQuizModalClose();
+      }
       console.log(answers);
       setCancelQuizPopup(true);
       setOpen(true);
@@ -154,7 +178,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
             </Box>
           </Box>
         </DialogTitle>
-      <Container
+        {!results ? <Container
         sx={{
           display: 'flex',
           height: 'calc(100vh - 105px)',
@@ -274,16 +298,16 @@ import CancelIcon from '@mui/icons-material/Cancel';
             </Button>
           </DialogActions>
         </Dialog>
-      </Container>
-
-
+      </Container> : <ResultsPreview results={results} />}
+      
         <DialogActions sx={{ borderTop: '1px solid #333' }}>
         <Button variant="outlined" color="error" onClick={quizCancelHandler}>
           Cancel
         </Button>
-        <Button variant="contained" endIcon={<TaskAltIcon />}>
+        {!results && <Button variant="contained" endIcon={<TaskAltIcon />}>
           Finish Quiz
-        </Button>
+        </Button>}
+        
       </DialogActions>
       </>
     );

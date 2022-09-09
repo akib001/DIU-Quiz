@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import useSWR, { mutate, trigger } from 'swr';
+import useSWR from 'swr';
 import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -32,7 +32,6 @@ function createData(
   duration,
   startTime,
   endTime,
-
   createdAt,
   updatedAt
 ) {
@@ -51,6 +50,8 @@ function createData(
 }
 
 const QuizList = () => {
+
+
   const [rows, setRows] = React.useState([]);
   const [openAttemptModal, setOpenAttemptModal] = React.useState(false);
   const [quizId, setQuizId] = React.useState('');
@@ -60,7 +61,7 @@ const QuizList = () => {
 
   const stateToken = useSelector((state) => state.profile.token);
 
-  const { data } = useSWR(['/quiz/available-quizzes', stateToken]);
+  const { data, mutate } = useSWR(['/quiz/available-quizzes', stateToken]);
 
 
   const theme = useTheme();
@@ -70,13 +71,18 @@ const QuizList = () => {
     setOpenAttemptModal(false);
   };
 
+  console.log(data?.availableQuizzes?.filter((item) => item._id !== quizId));
   const handleOpenQuizModalClose = () => {
+    mutate(['/quiz/available-quizzes', stateToken], (data) => data?.availableQuizzes?.filter((item) => item._id !== quizId), true);
+    console.log('mutating');
     setOpenQuizModal(false);
   };
+
 
   const attemptQuiz = React.useCallback(
     (id) => async () => {
       try {
+        setQuizId(id);
         const { data, error } = await axios.get(`/quiz/singleQuiz/${id}`, {
           headers: { Authorization: 'Bearer ' + stateToken },
         });
@@ -95,6 +101,7 @@ const QuizList = () => {
     };
 
   React.useEffect(() => {
+    console.log('re reun');
     if (data?.availableQuizzes?.length > 0) {
       data.availableQuizzes?.map((item, index) => {
         const row = createData(
@@ -193,7 +200,7 @@ const QuizList = () => {
         
         <QuizPopup
           quizData={quizData}
-          setOpenQuizModal={setOpenQuizModal}
+          handleOpenQuizModalClose={handleOpenQuizModalClose}
         /> 
       </Dialog>
     </div>
