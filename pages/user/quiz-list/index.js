@@ -13,15 +13,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  IconButton,
-  Typography,
 } from '@mui/material';
 import QuizPopup from '../../../components/user/QuizPopup';
-import HexagonOutlinedIcon from '@mui/icons-material/HexagonOutlined';
-import EditIcon from '@mui/icons-material/Edit';
+
 import { useRouter } from 'next/router';
-import { Box } from '@mui/system';
-import CancelIcon from '@mui/icons-material/Cancel';
+
 
 function createData(
   id,
@@ -50,7 +46,7 @@ function createData(
 }
 
 const QuizList = () => {
-
+  const router = useRouter()
 
   const [rows, setRows] = React.useState([]);
   const [openAttemptModal, setOpenAttemptModal] = React.useState(false);
@@ -61,7 +57,7 @@ const QuizList = () => {
 
   const stateToken = useSelector((state) => state.profile.token);
 
-  const { data, mutate } = useSWR(['/quiz/available-quizzes', stateToken]);
+  const { data } = useSWR(['/quiz/available-quizzes', stateToken]);
 
 
   const theme = useTheme();
@@ -71,10 +67,11 @@ const QuizList = () => {
     setOpenAttemptModal(false);
   };
 
-  console.log(data?.availableQuizzes?.filter((item) => item._id !== quizId));
+  // console.log(data?.availableQuizzes?.filter((item) => item._id !== quizId));
   const handleOpenQuizModalClose = () => {
-    mutate(['/quiz/available-quizzes', stateToken], (data) => data?.availableQuizzes?.filter((item) => item._id !== quizId), true);
-    console.log('mutating');
+    // mutate(['/quiz/available-quizzes', stateToken], (data) => data?.availableQuizzes?.filter((item) => item._id !== quizId), true);
+    // console.log('mutating');
+    router.reload(window.location.pathname);
     setOpenQuizModal(false);
   };
 
@@ -101,7 +98,6 @@ const QuizList = () => {
     };
 
   React.useEffect(() => {
-    console.log('re reun');
     if (data?.availableQuizzes?.length > 0) {
       data.availableQuizzes?.map((item, index) => {
         const row = createData(
