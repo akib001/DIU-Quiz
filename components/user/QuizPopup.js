@@ -32,7 +32,7 @@ import { useSelector } from 'react-redux';
 import ResultsPreview from './ResultsPreview';
   
   
-  const QuizPopup = ({quizData, handleOpenQuizModalClose}) => {
+  const QuizPopup = ({quizData, handleOpenQuizModalClose, mutate}) => {
 
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
@@ -69,11 +69,10 @@ import ResultsPreview from './ResultsPreview';
     };
   
     const submitQuizHandler = async () => {
-
-
       setOpen(false);
       if(cancelQuizPopup) {
         setCancelQuizPopup(false);
+        console.log('calling mutate function from submit')
         handleOpenQuizModalClose();
       }
 
@@ -87,6 +86,7 @@ import ResultsPreview from './ResultsPreview';
         });
         console.log('data.results', data.results);
         setResults(data.results);
+        mutate();
       } catch (error) {
         console.log(error);
       }
@@ -97,6 +97,7 @@ import ResultsPreview from './ResultsPreview';
 
     const quizCancelHandler = () => {
       if(results) {
+        console.log('calling mutate function')
         handleOpenQuizModalClose();
       }
       console.log(answers);

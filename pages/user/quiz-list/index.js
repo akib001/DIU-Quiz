@@ -57,7 +57,7 @@ const QuizList = () => {
 
   const stateToken = useSelector((state) => state.profile.token);
 
-  const { data } = useSWR(['/quiz/available-quizzes', stateToken]);
+  const { data, mutate } = useSWR(['/quiz/available-quizzes', stateToken]);
 
 
   const theme = useTheme();
@@ -71,7 +71,10 @@ const QuizList = () => {
   const handleOpenQuizModalClose = () => {
     // mutate(['/quiz/available-quizzes', stateToken], (data) => data?.availableQuizzes?.filter((item) => item._id !== quizId), true);
     // console.log('mutating');
-    router.reload(window.location.pathname);
+    // router.reload(window.location.pathname);
+    // console.log('mutating start');
+    // mutate();
+    // console.log('data changed', data);
     setOpenQuizModal(false);
   };
 
@@ -98,6 +101,7 @@ const QuizList = () => {
     };
 
   React.useEffect(() => {
+    let rowsArray = [];
     if (data?.availableQuizzes?.length > 0) {
       data.availableQuizzes?.map((item, index) => {
         const row = createData(
@@ -112,9 +116,10 @@ const QuizList = () => {
           format(new Date(parseISO(item.createdAt)), 'dd/MM/yy hh:mm a'),
           format(new Date(parseISO(item.updatedAt)), 'dd/MM/yy hh:mm a')
         );
-        setRows((prev) => [...prev, row]);
+        rowsArray.push(row);
       });
     }
+    setRows(rowsArray);
   }, [data]);
 
   const columns = React.useMemo(
@@ -145,7 +150,7 @@ const QuizList = () => {
       { field: 'createdAt', headerName: 'Created At', width: 150 },
       { field: 'updatedAt', headerName: 'Last Updated At', width: 150 },
     ],
-    []
+    [attemptQuiz]
   );
 
   return (
@@ -197,6 +202,7 @@ const QuizList = () => {
         <QuizPopup
           quizData={quizData}
           handleOpenQuizModalClose={handleOpenQuizModalClose}
+          mutate={mutate}
         /> 
       </Dialog>
     </div>
