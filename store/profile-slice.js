@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   token: '',
+  userId: '',
   name: '',
   email: '', 
   role: '',
@@ -24,11 +25,13 @@ const profileSlice = createSlice({
 
     userLogin(state, action) {
       state.token = action.payload.token;
+      state.userId = action.payload.userId;
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.role = action.payload.role;
       
       localStorage.setItem('token', state.token);
+      localStorage.setItem('userId', state.userId);
       localStorage.setItem('name', state.name);
       localStorage.setItem('email', state.email);
       localStorage.setItem('role', state.role);

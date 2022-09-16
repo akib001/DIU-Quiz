@@ -18,6 +18,7 @@ const Layout = (props) => {
   // Beacuse it's a next app we can't run localstorage on redux app it will show an error so to avoid that error
   useEffect(() => {
     let retrivedToken = localStorage.getItem('token');
+    let retrivedUserId = localStorage.getItem('userId');
     let retrivedEmail = localStorage.getItem('email');
     let retrivedName = localStorage.getItem('name');
     let retrivedRole = localStorage.getItem('role');
@@ -26,6 +27,7 @@ const Layout = (props) => {
       dispatch(
         profileActions.userLogin({
           token: retrivedToken,
+          userId: retrivedUserId,
           email: retrivedEmail,
           name: retrivedName,
           role: retrivedRole,

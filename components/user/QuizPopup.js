@@ -171,7 +171,7 @@ import ResultsPreview from './ResultsPreview';
           sx={{ borderBottom: '1px solid #333' }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Box><Typography variant='h6'>Attempt Quiz</Typography></Box>
+            <Box><Typography variant='h5'>Attempt Quiz</Typography></Box>
             <Box>
               <IconButton aria-label="delete" onClick={quizCancelHandler}>
                 <CancelIcon />
@@ -193,7 +193,7 @@ import ResultsPreview from './ResultsPreview';
           </Typography>
           <Box sx={{display: 'flex', justifyContent:'space-evenly'}}>
             <CountdownTimer duration={quizData.duration} setOpen={setOpen} timeoutAutoSubmitHandler={timeoutAutoSubmitHandler} />    
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Total Answerd: {answers.length}/{quizData.questions.length}
           </Typography>
           </Box>
@@ -203,7 +203,7 @@ import ResultsPreview from './ResultsPreview';
               id="demo-row-radio-buttons-group-label"
               sx={{ textAlign: 'center' }}
             >
-              <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', textDecoration: 'bold' }}>
+              <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', textDecoration: 'bold' }}>
                 {quizData.questions[questionIndex].question}
               </Typography>
             </FormLabel>
@@ -305,7 +305,7 @@ import ResultsPreview from './ResultsPreview';
         <Button variant="outlined" color="error" onClick={quizCancelHandler}>
           Cancel
         </Button>
-        {!results && <Button variant="contained" endIcon={<TaskAltIcon />}>
+        {!results && <Button variant="contained" onClick={quizFinishHandler} endIcon={<TaskAltIcon />}>
           Finish Quiz
         </Button>}
         

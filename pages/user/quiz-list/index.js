@@ -17,6 +17,7 @@ import {
 import QuizPopup from '../../../components/user/QuizPopup';
 
 import { useRouter } from 'next/router';
+import { Box } from '@mui/system';
 
 
 function createData(
@@ -67,14 +68,7 @@ const QuizList = () => {
     setOpenAttemptModal(false);
   };
 
-  // console.log(data?.availableQuizzes?.filter((item) => item._id !== quizId));
   const handleOpenQuizModalClose = () => {
-    // mutate(['/quiz/available-quizzes', stateToken], (data) => data?.availableQuizzes?.filter((item) => item._id !== quizId), true);
-    // console.log('mutating');
-    // router.reload(window.location.pathname);
-    // console.log('mutating start');
-    // mutate();
-    // console.log('data changed', data);
     setOpenQuizModal(false);
   };
 
@@ -132,7 +126,7 @@ const QuizList = () => {
         getActions: (params) => [
           <GridActionsCellItem
             key={params.id}
-            icon={<Button variant="contained">Attempt</Button>
+            icon={<Box sx={{ fontWeight: 'bold', color: 'white', backgroundColor: '#2563eb', px: '1rem', py: '.4rem', borderRadius: '15px'}}>Attempt</Box>
         }
             label="Attempt"
             onClick={attemptQuiz(params.id)}
@@ -161,6 +155,7 @@ const QuizList = () => {
             sortModel: [{ field: 'updatedAt', sort: 'asc' }],
           },
         }}
+        sx={{mx: '2rem', mt: '3rem'}}
         autoHeight
         rows={rows}
         columns={columns}

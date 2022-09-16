@@ -14,10 +14,26 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useSelector, useDispatch } from 'react-redux';
 import { profileActions } from '../../store/profile-slice';
+import { useRouter } from 'next/router';
 
-const pages = ['Quizzes', 'Result', 'Attend Quiz'];
+const pages = [
+  {
+    menuTitle: 'Quizzes',
+    link: '/user/quiz-list'
+  },
+  {
+    menuTitle: 'Results',
+    link: '/user/results'
+  },
+  {
+    menuTitle: 'Attend Quiz',
+    link: '/user/quiz-list'
+  },
+];
 
 const UserDashboard = (props) => {
+  const router = useRouter();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -42,6 +58,12 @@ const UserDashboard = (props) => {
     dispatch(profileActions.userLogin({}))
     setAnchorElUser(null);
   }
+
+  const handleMenuItem = (link) => {
+    setAnchorElNav(null);
+    router.push(link);
+  }
+
 
 
   return (
@@ -97,9 +119,9 @@ const UserDashboard = (props) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages?.map((item, index) => (
+                <MenuItem key={index} onClick={() => {router.push(item.link); setAnchorElNav(null)}}>
+                  <Typography textAlign="center">{item.menuTitle}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -124,13 +146,13 @@ const UserDashboard = (props) => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.map((item, index) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={index}
+                onClick={() => {router.push(item.link); setAnchorElNav(null)}}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {item.menuTitle}
               </Button>
             ))}
           </Box>
