@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import useSWR from 'swr';
-import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useSelector } from 'react-redux';
@@ -11,12 +10,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
   Typography,
 } from '@mui/material';
-import QuizPopup from '../../../components/user/QuizPopup';
 import { Box } from '@mui/system';
 import ResultsPreview from '../../../components/user/ResultsPreview';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -46,8 +43,6 @@ function createData(
 
 const Results = () => {
   const [rows, setRows] = React.useState([]);
-//   const [openAttemptModal, setOpenAttemptModal] = React.useState(false);
-//   const [quizId, setQuizId] = React.useState('');
   const [quizData, setQuizData] = React.useState('');
   const [openResultPreviewModal, setOpenResultPreviewModal] = React.useState(false);
   const [result, setResult] = React.useState([]);
@@ -56,7 +51,7 @@ const Results = () => {
   const stateToken = useSelector((state) => state.profile.token);
   const stateUserId = useSelector((state) => state.profile.userId);
 
-  const { data, error } = useSWR([`/quiz/fetch-results/${stateUserId}`, stateToken]);
+  const { data, error } = useSWR([`/quiz/fetch-results/user/${stateUserId}`, stateToken]);
 
   console.log('data', data);
 
@@ -66,10 +61,6 @@ const Results = () => {
   const handleModalClose = () => {
     setOpenResultPreviewModal(false);
   };
-
-//   const handleOpenQuizModalClose = () => {
-//     setOpenQuizModal(false);
-//   };
 
 
   const detailsResultHandler = React.useCallback(
@@ -173,9 +164,6 @@ const Results = () => {
           <Button autoFocus variant="outlined" color="error" onClick={handleModalClose}>
             Close
           </Button>
-          {/* <Button autoFocus onClick={confirmAttemptHandler}>
-            Confirm Attempt
-          </Button> */}
         </DialogActions>
       </Dialog>
 
