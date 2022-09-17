@@ -23,6 +23,7 @@ import FormInputText from './form-components/FormInputText';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { profileActions } from '../store/profile-slice';
+import { useRouter } from 'next/router';
 
 const theme = createTheme();
 
@@ -33,6 +34,7 @@ export default function Auth() {
   const [loading, setLoading] = React.useState(false);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -63,6 +65,7 @@ export default function Auth() {
         dispatch(profileActions.userLogin(loginRes.data));
         console.log('user Signed in');
         setLoading(false);
+        router.push('/user/quiz-list')
       } catch (error) {
         setErrorMessage(error.response?.data.message);
         setLoading(false);
@@ -98,6 +101,7 @@ export default function Auth() {
         });
         dispatch(profileActions.userLogin(loginRes.data));
         setLoading(false);
+        router.push('/quiz-list')
       } catch (error) { 
         setErrorMessage(error.response?.data.message);
         setLoading(false);

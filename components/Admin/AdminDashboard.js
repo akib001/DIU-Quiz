@@ -22,7 +22,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { mainNavbarItems } from './Const/adminNavBarItems';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { profileActions } from '../../store/profile-slice';
 
 const drawerWidth = 240;
@@ -32,6 +32,8 @@ function AdminDashboard(props) {
 
   const router = useRouter();
   const dispatch = useDispatch();
+
+  console.log(router.pathname)
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -47,6 +49,7 @@ function AdminDashboard(props) {
   };
 
   const handleLogout = () => {
+    router.push('/')
     dispatch(profileActions.userLogin({}))
     setAnchorEl(null);
   }
@@ -134,7 +137,7 @@ function AdminDashboard(props) {
         {mainNavbarItems.map((item, index) => (
           <ListItem key={item.id} disablePadding>
             <ListItemButton
-              selected={selectedIndex === item.id}
+              selected={router.pathname == `/${item.route}`}
               onClick={(event) => {
                 handleListItemClick(event, item.id);
                 router.push(item.route);

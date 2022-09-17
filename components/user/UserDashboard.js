@@ -55,6 +55,7 @@ const UserDashboard = (props) => {
   };
 
   const handleUserLogout = () => {
+    router.push('/')
     dispatch(profileActions.userLogin({}))
     setAnchorElUser(null);
   }
