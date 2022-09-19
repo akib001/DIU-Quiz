@@ -39,19 +39,15 @@ const Layout = (props) => {
               role: retrivedRole,
             })
           );
+          setLoading(false);
         }
-        setLoading(false);
-
       } catch(err) {
         console.log(err)
+        setLoading(false);
       }
     }
 
     checkAuth();
-
-    console.log('retrivedRole', retrivedRole);
-
-    
   }, [dispatch]);
 
   return (
