@@ -6,7 +6,7 @@ const initialState = {
   name: '',
   email: '', 
   role: '',
-  clicked: ''
+  // clicked: ''
 };
 
 const profileSlice = createSlice({
@@ -30,16 +30,16 @@ const profileSlice = createSlice({
       state.email = action.payload.email;
       state.role = action.payload.role;
       
-      localStorage.setItem('token', state.token);
-      localStorage.setItem('userId', state.userId);
-      localStorage.setItem('name', state.name);
-      localStorage.setItem('email', state.email);
-      localStorage.setItem('role', state.role);
+      // localStorage.setItem('token', state.token);
+      // localStorage.setItem('userId', state.userId);
+      // localStorage.setItem('name', state.name);
+      // localStorage.setItem('email', state.email);
+      // localStorage.setItem('role', state.role);
     },
 
-    userClicked(state) {
-      state.clicked = true;
-    }
+    // userClicked(state) {
+    //   state.clicked = true;
+    // }
     // userLogout(state) {
     //   state.token = '';
     //   state.userEmail = '';

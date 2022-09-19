@@ -29,6 +29,9 @@ const Layout = (props) => {
         const {data: authResponse} = await axios.get('/auth/check-auth');
         console.log('authResponse', authResponse)
         retrivedRole = authResponse.role;
+        retrivedUserId = authResponse.userId;
+        retrivedEmail = authResponse.email;
+        retrivedName = authResponse.name;
         if (retrivedRole) {
           dispatch(
             profileActions.userLogin({
