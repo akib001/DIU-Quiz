@@ -58,7 +58,7 @@ const QuizList = () => {
 
   const stateToken = useSelector((state) => state.profile.token);
 
-  const { data, mutate } = useSWR(['/quiz/available-quizzes', stateToken]);
+  const { data, mutate } = useSWR('/quiz/available-quizzes');
 
 
   const theme = useTheme();
@@ -77,16 +77,14 @@ const QuizList = () => {
     (id) => async () => {
       try {
         setQuizId(id);
-        const { data, error } = await axios.get(`/quiz/singleQuiz/${id}`, {
-          headers: { Authorization: 'Bearer ' + stateToken },
-        });
+        const { data, error } = await axios.get(`/quiz/singleQuiz/${id}`);
         setQuizData(data.quiz);
         setOpenAttemptModal(true);
       } catch (error) {
         console.log(error);
       }
     },
-    [stateToken]
+    []
   );
 
     const confirmAttemptHandler = () => {

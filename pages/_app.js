@@ -5,11 +5,12 @@ import store from '../store'
 import Layout from '../components/Layout/Layout';
 
 axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.withCredentials = true;
 
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <SWRConfig value={{ fetcher: (url, token) => axios(url, { headers: { Authorization: "Bearer " + token } }).then((r) => r.data) }}>
+      <SWRConfig value={{ fetcher: (url) => axios(url).then((r) => r.data) }}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
