@@ -28,16 +28,14 @@ import { useBeforeUnload } from "react-use";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const quizId = () => {
+const QuizId = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
   const { quizId } = router.query;
   const stateToken = useSelector((state) => state.profile.token);
 
-  const { data } = useSWR([
-    `/quiz/available-single-quiz/${quizId}`,
-    stateToken,
-  ]);
+  const { data } = useSWR(
+    `/quiz/available-single-quiz/${quizId}`);
 
   const questions = data?.quiz[0]?.questions;
 
@@ -285,4 +283,4 @@ const quizId = () => {
   );
 };
 
-export default quizId;
+export default QuizId;

@@ -51,7 +51,7 @@ const Results = () => {
   const stateToken = useSelector((state) => state.profile.token);
   const stateUserId = useSelector((state) => state.profile.userId);
 
-  const { data, error } = useSWR([`/quiz/fetch-results/user/${stateUserId}`, stateToken]);
+  const { data, error } = useSWR(`/quiz/fetch-results/user/${stateUserId}`);
 
   console.log('data', data);
 

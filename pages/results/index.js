@@ -69,9 +69,7 @@ const Results = () => {
     const fetchQuizOptions = async () => {
       let dropdownOptionsArray = [];
       try {
-        const { data } = await axios.get('/quiz/fetch-quizzes', {
-          headers: { Authorization: 'Bearer ' + stateToken },
-        });
+        const { data } = await axios.get('/quiz/fetch-quizzes');
         console.log(data);
         setQuizzes(data?.quiz);
         if (data?.quiz) {

@@ -60,7 +60,7 @@ const QuizList = () => {
 
   const stateToken = useSelector((state) => state.profile.token);
 
-  const { data } = useSWR(['/quiz/fetch-quizzes', stateToken]);
+  const { data } = useSWR('/quiz/fetch-quizzes');
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -84,9 +84,7 @@ const QuizList = () => {
   const editQuiz = React.useCallback(
     (id) => async () => {
       try {
-        const { data, error } = await axios.get(`/quiz/singleQuiz/${id}`, {
-          headers: { Authorization: 'Bearer ' + stateToken },
-        });
+        const { data, error } = await axios.get(`/quiz/singleQuiz/${id}`);
         setEditQuizData(data.quiz);
       } catch (error) {
         console.log(error);

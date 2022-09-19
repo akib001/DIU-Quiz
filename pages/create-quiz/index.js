@@ -98,10 +98,7 @@ const CreateQuiz = () => {
     if (!status && open === true) {
       response = await axios.post(
         '/quiz/create-quiz',
-        { ...data, totalMark: totalMark },
-        {
-          headers: { Authorization: 'Bearer ' + stateToken },
-        }
+        { ...data, totalMark: totalMark }
       );
       console.log(response);
       console.log('save');

@@ -81,8 +81,6 @@ import ResultsPreview from './ResultsPreview';
           answers: answers,
           duration: 10,
           quizId: quizData._id
-        }, {
-          headers: { Authorization: 'Bearer ' + stateToken }
         });
         console.log('data.results', data.results);
         setResults(data.results);
