@@ -86,12 +86,10 @@ const Results = () => {
       }
     };
     fetchQuizOptions();
-  }, []);
+  }, [dropdownOptions, quizzes]);
 
   const detailsResultHandler = React.useCallback(
     (id) => () => {
-      console.log('detailed results id', id)
-      console.log('detailed results resultsData', resultsData)
       const result = resultsData?.filter((item) => item._id == id);
       // console.log('detailed results result', result)
       setResult(result[0]);

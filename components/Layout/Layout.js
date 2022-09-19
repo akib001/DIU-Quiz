@@ -4,7 +4,7 @@ import Auth from '../Auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { profileActions } from '../../store/profile-slice';
 import UserDashboard from '../user/UserDashboard';
-import { Skeleton } from '@mui/material';
+import { Backdrop, CircularProgress, Skeleton } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 
@@ -26,8 +26,8 @@ const Layout = (props) => {
 
     const checkAuth = async () => {
       try {
-        const {data: authResponse} = await axios.get('/auth/check-auth');
-        console.log('authResponse', authResponse)
+        const { data: authResponse } = await axios.get('/auth/check-auth');
+        console.log('authResponse', authResponse);
         retrivedRole = authResponse.role;
         retrivedUserId = authResponse.userId;
         retrivedEmail = authResponse.email;
@@ -44,11 +44,11 @@ const Layout = (props) => {
           );
           setLoading(false);
         }
-      } catch(err) {
-        console.log(err)
+      } catch (err) {
+        console.log(err);
         setLoading(false);
       }
-    }
+    };
 
     checkAuth();
   }, [dispatch]);

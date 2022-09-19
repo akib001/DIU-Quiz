@@ -91,7 +91,7 @@ const QuizList = () => {
       }
       setOpenEditModal(true);
     },
-    [stateToken]
+    []
   );
 
   const confirmDeleteHandler = async () => {
