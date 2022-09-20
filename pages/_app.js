@@ -6,7 +6,7 @@ import Layout from '../components/Layout/Layout';
 import Router from 'next/router';
 import ProgressBar from '@badrap/bar-of-progress';
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'https://diuquiz-server.onrender.com';
 axios.defaults.withCredentials = true;
 
 const progress = new ProgressBar({
