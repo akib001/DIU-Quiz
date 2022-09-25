@@ -24,6 +24,7 @@ import { mainNavbarItems } from './Const/adminNavBarItems';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { profileActions } from '../../store/profile-slice';
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -32,8 +33,6 @@ function AdminDashboard(props) {
 
   const router = useRouter();
   const dispatch = useDispatch();
-
-  console.log(router.pathname)
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -48,11 +47,20 @@ function AdminDashboard(props) {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    router.push('/')
-    dispatch(profileActions.userLogin({}))
-    setAnchorEl(null);
-  }
+  const handleLogout = async () => {
+    try {
+      const { data: logoutResponse } = await axios.get('/auth/user/logout');
+      if(logoutResponse.logout == true) {
+        router.push('/');
+        dispatch(profileActions.userLogin({}));
+        setAnchorEl(null);
+      } else {
+        console.log('logout failed!')
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
