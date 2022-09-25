@@ -73,7 +73,7 @@ const Results = () => {
         console.log(data);
         setQuizzes(data?.quiz);
         if (data?.quiz) {
-          data?.quiz?.map((item, index) => {
+          data?.quiz?.map((item) => {
             if (dropdownOptions.indexOf(item.title) === -1) {
               dropdownOptionsArray.push(item.title);
             }
@@ -86,7 +86,7 @@ const Results = () => {
       }
     };
     fetchQuizOptions();
-  }, [dropdownOptions, quizzes]);
+  }, []);
 
   const detailsResultHandler = React.useCallback(
     (id) => () => {
@@ -107,8 +107,7 @@ const Results = () => {
       try {
         if (quiz?._id) {
           const { data } = await axios.get(
-            `/quiz/fetch-results/quiz/${quiz._id}`,
-            { headers: { Authorization: 'Bearer ' + stateToken } }
+            `/quiz/fetch-results/quiz/${quiz._id}`
           );
           setResultsData(data?.results);
           let rowsArray = [];
@@ -134,7 +133,7 @@ const Results = () => {
       }
     };
     fetchQuizResult();
-  }, [dropdownValue]);
+  }, [dropdownValue, quizzes]);
 
   const columns = React.useMemo(
     () => [
