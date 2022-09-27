@@ -102,7 +102,7 @@ export default function Auth() {
         });
         dispatch(profileActions.userLogin(loginRes.data));
         setLoading(false);
-        router.push('/quiz-list')
+        router.push('/dashboard')
       } catch (error) { 
         setErrorMessage(error.response?.data.message);
         setLoading(false);

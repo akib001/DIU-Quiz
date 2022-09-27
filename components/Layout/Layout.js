@@ -66,10 +66,13 @@ const Layout = (props) => {
           <Auth />
         )
       ) : (
-        <Box sx={{ width: 300 }}>
-          <Skeleton />
-          <Skeleton animation="wave" />
-          <Skeleton animation={false} />
+        // <Box sx={{ width: 300 }}>
+        //   <Skeleton />
+        //   <Skeleton animation="wave" />
+        //   <Skeleton animation={false} />
+        // </Box>
+        <Box sx={{ width: '100wh', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <CircularProgress />
         </Box>
       )}
     </>
