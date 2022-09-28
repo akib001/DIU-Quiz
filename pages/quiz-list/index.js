@@ -60,7 +60,7 @@ const QuizList = () => {
 
   const stateToken = useSelector((state) => state.profile.token);
 
-  const { data } = useSWR('/quiz/fetch-quizzes');
+  const { data } = useSWR('quiz/admin/fetch-quizzes');
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));

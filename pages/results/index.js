@@ -69,7 +69,7 @@ const Results = () => {
     const fetchQuizOptions = async () => {
       let dropdownOptionsArray = [];
       try {
-        const { data } = await axios.get('/quiz/fetch-quizzes');
+        const { data } = await axios.get('quiz/admin/fetch-quizzes');
         console.log(data);
         setQuizzes(data?.quiz);
         if (data?.quiz) {

@@ -12,8 +12,6 @@ const Layout = (props) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
-
-  const stateUserToken = useSelector((state) => state.profile.token);
   const stateUserRole = useSelector((state) => state.profile.role);
 
   // Beacuse it's a next app we can't run localstorage on redux app it will show an error so to avoid that error
