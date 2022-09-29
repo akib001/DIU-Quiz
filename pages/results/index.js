@@ -176,7 +176,7 @@ const Results = () => {
     [detailsResultHandler]
   );
 
-  console.log('results data ', resultsData)
+  // console.log('results data ', resultsData)
 
   return (
     <div style={{ width: '100%' }}>
