@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import React from 'react';
 import useSWR from 'swr';
-import { compareAsc, parseISO } from 'date-fns';
+import { compareAsc, parseISO, format } from 'date-fns';
 
 function createData(
   id,
@@ -23,26 +23,26 @@ const StudentList = () => {
   const [rows, setRows] = React.useState([]);
   const { data, error } = useSWR('/quiz/admin/students');
 
-  console.log('students ', data?.students);
+  // console.log('students ', data?.students);
 
   const highestMarkCalculate = (quizzesArray) => {
     let highestMark = 0;
     quizzesArray?.map((item) => {
-      if(item.obtainedMark > highestMark)
-       highestMark = item.obtainedMark
-    })
+      if (item.obtainedMark > highestMark) highestMark = item.obtainedMark;
+    });
     return highestMark;
-  }
+  };
 
   const latestDateCalculate = (quizzesArray) => {
     let latestDate = new Date(parseISO(quizzesArray[0].date));
     quizzesArray?.map((item) => {
-      const itemDate = new Date(parseISO(item.date));
-      compareAsc(latestDate, itemDate)
-      console.log(compareAsc(latestDate, itemDate))
-    })
-    return 0;
-  }
+      const date = new Date(parseISO(item.date));
+      if (compareAsc(latestDate, date)) {
+        latestDate = date;
+      }
+    });
+    return format(latestDate, 'dd/MM/yy hh:mm a');
+  };
 
   React.useEffect(() => {
     let rows = [];
@@ -55,7 +55,7 @@ const StudentList = () => {
           item.name,
           item.quizzes.length,
           highestMark,
-          50
+          lastQuizAttemptDate
         );
         rows.push(row);
       });
@@ -82,19 +82,20 @@ const StudentList = () => {
     []
   );
 
-  return <div style={{ width: '100%' }}>
-  <DataGrid
-    // initialState={{
-    //   sorting: {
-    //     sortModel: [{ field: 'updatedAt', sort: 'asc' }],
-    //   },
-    // }}
-    autoHeight
-    rows={rows}
-    columns={columns}
-  />
-
-</div>;
+  return (
+    <div style={{ width: '100%' }}>
+      <DataGrid
+        // initialState={{
+        //   sorting: {
+        //     sortModel: [{ field: 'updatedAt', sort: 'asc' }],
+        //   },
+        // }}
+        autoHeight
+        rows={rows}
+        columns={columns}
+      />
+    </div>
+  );
 };
 
 export default StudentList;

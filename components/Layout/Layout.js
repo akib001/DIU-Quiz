@@ -4,7 +4,7 @@ import Auth from '../Auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { profileActions } from '../../store/profile-slice';
 import UserDashboard from '../user/UserDashboard';
-import { Backdrop, CircularProgress, Skeleton } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 
@@ -64,11 +64,6 @@ const Layout = (props) => {
           <Auth />
         )
       ) : (
-        // <Box sx={{ width: 300 }}>
-        //   <Skeleton />
-        //   <Skeleton animation="wave" />
-        //   <Skeleton animation={false} />
-        // </Box>
         <Box sx={{ width: '100wh', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <CircularProgress />
         </Box>

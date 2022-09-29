@@ -147,8 +147,12 @@ function AdminDashboard(props) {
             <ListItemButton
               selected={router.pathname == `/${item.route}`}
               onClick={(event) => {
-                handleListItemClick(event, item.id);
-                router.push(item.route);
+                if(item.id == 5) {
+                  handleLogout();  
+                } else {
+                  handleListItemClick(event, item.id);
+                  router.push(item.route);
+                }
               }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>

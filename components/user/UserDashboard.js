@@ -19,6 +19,10 @@ import axios from 'axios';
 
 const pages = [
   {
+    menuTitle: 'Dashboard',
+    link: '/user/dashboard',
+  },
+  {
     menuTitle: 'Quizzes',
     link: '/user/quiz-list',
   },
