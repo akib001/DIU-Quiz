@@ -201,8 +201,8 @@ import ResultsPreview from './ResultsPreview';
               id="demo-row-radio-buttons-group-label"
               sx={{ textAlign: 'center' }}
             >
-              <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', textDecoration: 'bold' }}>
-                {quizData.questions[questionIndex].question}
+              <Typography variant="h5" gutterBottom sx={{ mt: '2rem', color: '#333', textAlign: 'center', textDecoration: 'bold' }}>
+                {quizData.questions[questionIndex].questionText}
               </Typography>
             </FormLabel>
             <RadioGroup
