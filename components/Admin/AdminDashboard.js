@@ -136,9 +136,18 @@ function AdminDashboard(props) {
   const drawer = (
     <div>
       <Toolbar>
-      <Typography variant="h6" noWrap component="div">
-        DIU Quiz
-      </Typography>
+      {/*<Typography variant="h6" noWrap component="div">*/}
+      {/*  DIU Quiz*/}
+      {/*</Typography>*/}
+        <Box
+            component="img"
+            sx={{
+              maxWidth: 165,
+              objectFit: 'contain',
+            }}
+            alt="Diu Quiz"
+            src="/logoBlack.png"
+        />
         </Toolbar>
       <Divider />
       <List>

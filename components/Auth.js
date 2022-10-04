@@ -57,7 +57,7 @@ export default function Auth() {
   const onSubmitHandler = async (data) => {
     setLoading(true);
     setErrorMessage('');
-    if (isSignIn && authMode == 'user') {
+    if (isSignIn && authMode === 'user') {
       try {
         const loginRes = await axios.post('/auth/user/login', {
           ...data,
@@ -73,7 +73,7 @@ export default function Auth() {
     }
 
     // user Signup
-    if (!isSignIn && authMode == 'user') {
+    if (!isSignIn && authMode === 'user') {
       try {
         await axios.put('/auth/user/signup', {
           ...data,
@@ -93,7 +93,7 @@ export default function Auth() {
       }
     }
 
-    if (isSignIn && authMode == 'admin') {
+    if (isSignIn && authMode === 'admin') {
       try {
         const loginRes = await axios.post('/auth/admin/login', {
           ...data,
@@ -114,7 +114,6 @@ export default function Auth() {
           role: 'admin',
         });
         console.log('admin Sign UP');
-
         const loginRes = await axios.post('/auth/admin/login', {
           ...data,
           role: 'admin',
@@ -138,7 +137,7 @@ export default function Auth() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: 'url(https://raw.githubusercontent.com/akib001/DIU-Quiz/master/public/diuQuiz2.png)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'

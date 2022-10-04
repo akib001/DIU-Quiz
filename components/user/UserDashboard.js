@@ -84,25 +84,17 @@ const UserDashboard = (props) => {
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              DIU QUIZ
-            </Typography>
-
+            <Box
+                component="img"
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                  maxWidth: 40,
+                  mr: 1,
+                  objectFit: 'contain',
+                }}
+                alt="Diu Quiz"
+                src="/logoMini.png"
+            />
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
@@ -145,25 +137,20 @@ const UserDashboard = (props) => {
                 ))}
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              LOGO
-            </Typography>
+            <Box sx={{display: { xs: 'flex', md: 'none' }, justifyContent: 'center', width: '100%'}}>
+            <Box
+                component="img"
+                noWrap
+                sx={{
+                  display: { xs: 'flex', md: 'none' },
+                  justifyContent: 'center',
+                  maxWidth: 140,
+                  objectFit: 'contain',
+                }}
+                alt="Diu Quiz"
+                src="/logoWhite.png"
+            />
+            </Box>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((item, index) => (
                 <Button
@@ -172,7 +159,7 @@ const UserDashboard = (props) => {
                     router.push(item.link);
                     setAnchorElNav(null);
                   }}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 1.5, mx: 1, fontSize: '1.2rem', color: 'white', display: 'block' }}
                 >
                   {item.menuTitle}
                 </Button>

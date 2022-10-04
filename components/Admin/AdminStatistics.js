@@ -32,7 +32,7 @@ const AdminStatistics = () => {
                 <Grid item xs={12} lg={4}>
                     <Card variant="outlined" sx={{display: 'flex', flexDirection: 'column', border: '1px solid #333', borderRadius: '10px', textAlign: 'center', p: '1rem'}}>
                         <Typography variant="h4" gutterBottom>
-                            Total Quizzes:
+                            Total Published Quizzes:
                         </Typography>
                         <Typography variant="h3" gutterBottom>
                             {statistics?.totalQuizzes}
