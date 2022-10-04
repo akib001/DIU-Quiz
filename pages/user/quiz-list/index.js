@@ -15,8 +15,6 @@ import {
   DialogTitle,
 } from '@mui/material';
 import QuizPopup from '../../../components/user/QuizPopup';
-
-import { useRouter } from 'next/router';
 import { Box } from '@mui/system';
 
 
@@ -47,8 +45,6 @@ function createData(
 }
 
 const QuizList = () => {
-  const router = useRouter()
-
   const [rows, setRows] = React.useState([]);
   const [openAttemptModal, setOpenAttemptModal] = React.useState(false);
   const [quizId, setQuizId] = React.useState('');
