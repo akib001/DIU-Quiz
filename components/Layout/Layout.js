@@ -55,7 +55,7 @@ const Layout = (props) => {
     <>
       {!loading ? (
         stateUserRole ? (
-          stateUserRole == 'user' ? (
+          stateUserRole === 'user' ? (
             <UserDashboard {...props} />
           ) : (
             <AdminDashboard {...props} />

@@ -66,7 +66,6 @@ export default function Auth() {
         dispatch(profileActions.userLogin(loginRes.data));
         console.log('user Signed in');
         setLoading(false);
-        router.push('/user/quiz-list')
       } catch (error) {
         setErrorMessage(error.response?.data.message);
         setLoading(false);
@@ -102,14 +101,13 @@ export default function Auth() {
         });
         dispatch(profileActions.userLogin(loginRes.data));
         setLoading(false);
-        router.push('/dashboard')
       } catch (error) { 
         setErrorMessage(error.response?.data.message);
         setLoading(false);
       }
     }
 
-    if (!isSignIn && authMode == 'admin') {
+    if (!isSignIn && authMode === 'admin') {
       try {
         await axios.put('/auth/admin/signup', {
           ...data,
