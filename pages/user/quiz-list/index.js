@@ -183,7 +183,6 @@ const QuizList = () => {
         onClose={handleOpenQuizModalClose}
         aria-labelledby="responsive-dialog-title"
       >
-        
         <QuizPopup
           quizData={quizData}
           handleOpenQuizModalClose={handleOpenQuizModalClose}

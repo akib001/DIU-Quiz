@@ -5,8 +5,8 @@ import store from '../store'
 import Layout from '../components/Layout/Layout';
 import Router from 'next/router';
 import ProgressBar from '@badrap/bar-of-progress';
+import {SnackbarProvider} from "notistack";
 
-// axios.defaults.baseURL = 'http://localhost:8080/';
 axios.defaults.baseURL = 'https://diuquiz-server.onrender.com';
 axios.defaults.withCredentials = true;
 
@@ -25,11 +25,13 @@ Router.events.on('routeChangeError', progress.finish);
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <SWRConfig value={{ fetcher: (url) => axios(url).then((r) => r.data) }}>
+      <SnackbarProvider maxSnack={3}>
+      <SWRConfig value={{ fetcher: (url) => axios(url).then((r) => r.data)}}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
       </SWRConfig>
+      </SnackbarProvider>
     </Provider>
   );
 }

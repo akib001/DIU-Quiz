@@ -19,20 +19,18 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-// import Router from "next/router";
-//   import { useRouter } from 'next/router';
-  import { Box } from '@mui/system';
-  import React, {useCallback, useEffect, useState} from 'react';
-//   import questions from '../../../components/data/questions.json';
-  import CountdownTimer from './CountdownTimer';
-  import RadioInputItem from '../form-components/RadioInputItem';
-  // import { useBeforeUnload } from "react-use";
-  import { useTheme } from '@mui/material/styles';
-  import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box } from '@mui/system';
+import React, {useCallback, useEffect, useState} from 'react';
+import CountdownTimer from './CountdownTimer';
+import RadioInputItem from '../form-components/RadioInputItem';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import ResultsPreview from './ResultsPreview';
+import { useSnackbar } from 'notistack';
   
   
   const QuizPopup = ({quizData, handleOpenQuizModalClose, mutate}) => {
+    const { enqueueSnackbar } = useSnackbar();
 
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
@@ -71,7 +69,6 @@ import ResultsPreview from './ResultsPreview';
         }
       })
 
-      // console.log('answers log', answers);
 
       try {
         const { data, error } = await axios.post(`/quiz/attempt-quiz`, {
@@ -81,8 +78,10 @@ import ResultsPreview from './ResultsPreview';
         });
         console.log('data.results', data.results);
         setResults(data.results);
+        enqueueSnackbar('Quiz submitted Successfully!', {variant: 'success'});
         mutate();
       } catch (error) {
+        enqueueSnackbar(error.message, {variant: 'error'});
         console.log(error);
       }
     }, [answers, cancelQuizPopup, handleOpenQuizModalClose, mutate, quizData]) 
@@ -301,4 +300,5 @@ import ResultsPreview from './ResultsPreview';
   };
   
   export default QuizPopup;
+
   

@@ -27,6 +27,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PreviewQuiz from '../../components/Admin/PreviewQuiz';
 import Router, { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
 const CreateQuiz = () => {
   const {
@@ -34,6 +35,8 @@ const CreateQuiz = () => {
     control,
     formState: { errors },
   } = useForm();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
 
@@ -90,6 +93,7 @@ const CreateQuiz = () => {
           headers: { Authorization: 'Bearer ' + stateToken },
         }
       );
+      enqueueSnackbar('Quiz created Successfully!', {variant: 'success'});
       handleClose();
       handlePreviewClose();
       router.push('/quiz-list')
@@ -101,6 +105,7 @@ const CreateQuiz = () => {
         { ...data, totalMark: totalMark }
       );
       console.log(response);
+      enqueueSnackbar('Quiz created Successfully!', {variant: 'success'});
       console.log('save');
       handleClose();
       handlePreviewClose();
