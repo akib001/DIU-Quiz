@@ -67,6 +67,8 @@ import ResultsPreview from './ResultsPreview';
     const handleClose = () => {
       setOpen(false);
     };
+
+    console.log('answers outside', answers);
   
     const submitQuizHandler = async () => {
       setOpen(false);
@@ -75,9 +77,20 @@ import ResultsPreview from './ResultsPreview';
         handleOpenQuizModalClose();
       }
 
+      let inputedAnswers = answers;
+      quizData.questions?.map((item, index) => {
+        if(!inputedAnswers[index]) {
+          console.log('alsdf', index);
+
+          inputedAnswers.push({ qIndex: index, answer: 'empty' })
+        }
+      })
+
+      // console.log('answers log', answers);
+
       try {
         const { data, error } = await axios.post(`/quiz/attempt-quiz`, {
-          answers: answers,
+          answers: inputedAnswers,
           duration: 10,
           quizId: quizData._id
         });
