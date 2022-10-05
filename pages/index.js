@@ -6,7 +6,7 @@ export default function Home() {
     const stateUserRole = useSelector((state) => state.profile.role);
   return (
     <>
-        {stateUserRole === 'user' ? <UserStatistics/> : stateUserRole === 'admin' ? <AdminStatistics/> : <p>You don't have permission</p>}
+        {stateUserRole === 'user' ? <UserStatistics/> : stateUserRole === 'admin' ? <AdminStatistics/> : <p>You don&apos;t have permission</p>}
     </>
   )   
 }

@@ -37,40 +37,25 @@ import ResultsPreview from './ResultsPreview';
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [cancelQuizPopup, setCancelQuizPopup] = useState(false);
-    // const [isConfirm, setIsConfirm] = useState(true);
-    // const [message, setMessage] = useState('Are you sure you want to leave');
-      const stateToken = useSelector((state) => state.profile.token);
+    const [isAutoSubmit, setIsAutoSubmit] = useState(false);
+    const stateToken = useSelector((state) => state.profile.token);
     const [open, setOpen] = React.useState(false);
     const [results, setResults] = React.useState('');
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   
-    // const router = useRouter();
-  
-    // useBeforeUnload(isConfirm, message);
-  
-    // useEffect(() => {
-    //   const handler = () => {
-    //     if (isConfirm && !window.confirm(message)) {
-    //       console.log('router rejected')
-    //       throw "Route Canceled";
-    //     }
-    //   };
-  
-    //   Router.events.on("beforeHistoryChange", handler);
-  
-    //   return () => {
-    //     Router.events.off("beforeHistoryChange", handler);
-    //   };  
-    // }, [isConfirm, message]);
-  
     const handleClose = () => {
       setOpen(false);
     };
 
-    console.log('answers outside', answers);
+    useEffect(() => {
+      if(isAutoSubmit) {
+        submitQuizHandler();
+      }
+    }, [isAutoSubmit, submitQuizHandler])
+
   
-    const submitQuizHandler = async () => {
+    const submitQuizHandler = useCallback(async () => {
       setOpen(false);
       if(cancelQuizPopup) {
         setCancelQuizPopup(false);
@@ -100,10 +85,7 @@ import ResultsPreview from './ResultsPreview';
       } catch (error) {
         console.log(error);
       }
-      
-      // setIsConfirm(false);
-      // router.push('/user/quiz/result')
-    }
+    }, [answers, cancelQuizPopup, handleOpenQuizModalClose, mutate, quizData]) 
 
     const quizCancelHandler = () => {
       if(results) {
@@ -119,14 +101,7 @@ import ResultsPreview from './ResultsPreview';
       console.log(answers);
       setOpen(true);
     }
-  
-    const timeoutAutoSubmitHandler = useCallback(() => {
-      console.log('TimeOut', answers);
-      submitQuizHandler();
-      // setIsConfirm(false);
-      // router.push('/result')
-    }, []);
-  
+
     let previousButton = (
       <Button
         variant="outlined"
@@ -203,7 +178,7 @@ import ResultsPreview from './ResultsPreview';
             {quizData.title}
           </Typography>
           <Box sx={{display: 'flex', justifyContent:'space-evenly'}}>
-            <CountdownTimer duration={quizData.duration} setOpen={setOpen} timeoutAutoSubmitHandler={timeoutAutoSubmitHandler} />
+            <CountdownTimer duration={quizData.duration} setOpen={setOpen} setIsAutoSubmit={setIsAutoSubmit} />
           <Typography variant="h5" gutterBottom>
             Total Answerd: {answers.length}/{quizData.questions.length}
           </Typography>

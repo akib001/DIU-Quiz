@@ -5,11 +5,11 @@ import { memo } from 'react';
 import { Box } from '@mui/system';
 
 // eslint-disable-next-line react/display-name
-const CountdownTimer = memo(({ duration, timeoutAutoSubmitHandler }) => {
+const CountdownTimer = memo(({ duration, setIsAutoSubmit }) => {
 
   const renderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
-      return timeoutAutoSubmitHandler();
+      return setIsAutoSubmit(true);
     } else {
       // Render a countdown
       return (
