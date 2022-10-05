@@ -140,7 +140,6 @@ const UserDashboard = (props) => {
             <Box sx={{display: { xs: 'flex', md: 'none' }, justifyContent: 'center', width: '100%'}}>
             <Box
                 component="img"
-                noWrap
                 sx={{
                   display: { xs: 'flex', md: 'none' },
                   justifyContent: 'center',

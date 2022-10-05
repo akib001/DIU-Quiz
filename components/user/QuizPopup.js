@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 // import Router from "next/router";
 //   import { useRouter } from 'next/router';
   import { Box } from '@mui/system';
-  import React, { useEffect, useState } from 'react';
+  import React, {useCallback, useEffect, useState} from 'react';
 //   import questions from '../../../components/data/questions.json';
   import CountdownTimer from './CountdownTimer';
   import RadioInputItem from '../form-components/RadioInputItem';
@@ -72,7 +72,6 @@ import ResultsPreview from './ResultsPreview';
       setOpen(false);
       if(cancelQuizPopup) {
         setCancelQuizPopup(false);
-        console.log('calling mutate function from submit')
         handleOpenQuizModalClose();
       }
 
@@ -108,11 +107,12 @@ import ResultsPreview from './ResultsPreview';
       setOpen(true);
     }
   
-    const timeoutAutoSubmitHandler = () => {
-      console.log(answers);
+    const timeoutAutoSubmitHandler = useCallback(() => {
+      console.log('TimeOut', answers);
+      submitQuizHandler();
       // setIsConfirm(false);
       // router.push('/result')
-    }
+    }, []);
   
     let previousButton = (
       <Button
@@ -123,7 +123,7 @@ import ResultsPreview from './ResultsPreview';
       </Button>
     );
   
-    if (questionIndex == 0) {
+    if (questionIndex === 0) {
       previousButton = null;
     }
   
@@ -136,14 +136,14 @@ import ResultsPreview from './ResultsPreview';
       </Button>
     );
   
-    if (questionIndex == quizData.questions.length - 1) {
+    if (questionIndex === quizData.questions.length - 1) {
       nextButton = (
         <Button variant="outlined" onClick={quizFinishHandler}>
           Finish
         </Button>
       );
     }
-  
+
     const answerSaveHandler = (e, questionIndex) => {
       if (!answers[questionIndex]) {
         setAnswers((prevState) => [
@@ -190,7 +190,7 @@ import ResultsPreview from './ResultsPreview';
             {quizData.title}
           </Typography>
           <Box sx={{display: 'flex', justifyContent:'space-evenly'}}>
-            <CountdownTimer duration={quizData.duration} setOpen={setOpen} timeoutAutoSubmitHandler={timeoutAutoSubmitHandler} />    
+            <CountdownTimer duration={quizData.duration} setOpen={setOpen} timeoutAutoSubmitHandler={timeoutAutoSubmitHandler} />
           <Typography variant="h5" gutterBottom>
             Total Answerd: {answers.length}/{quizData.questions.length}
           </Typography>
@@ -258,7 +258,7 @@ import ResultsPreview from './ResultsPreview';
                 <Button
                   key={index}
                   sx={
-                    index == questionIndex
+                    index === questionIndex
                       ? { backgroundColor: 'dodgerBlue', color: 'white', "&:hover": {color: 'white', backgroundColor: '#607d8b'}  }
                       : answers[index]?.answer
                       ? { backgroundColor: '#bbdefb', color: 'black', "&:hover": {color: 'black', backgroundColor: '#bdbdbd'} }
@@ -285,7 +285,7 @@ import ResultsPreview from './ResultsPreview';
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              You can not re-attemp this exam. Please think before click on finish button.
+              You can not re-attempt this exam. Please think before click on finish button.
             </DialogContentText>
           </DialogContent>
           <DialogActions>

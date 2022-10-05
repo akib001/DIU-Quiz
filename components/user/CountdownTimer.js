@@ -6,15 +6,9 @@ import { Box } from '@mui/system';
 
 // eslint-disable-next-line react/display-name
 const CountdownTimer = memo(({ duration, timeoutAutoSubmitHandler }) => {
-  const timeCompleteHandler = () => {
-    console.log('time complete');
-    // setOpen(true);
-    timeoutAutoSubmitHandler();
-  };
 
   const renderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
-      // Render a completed state
       return timeoutAutoSubmitHandler();
     } else {
       // Render a countdown

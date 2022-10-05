@@ -4,7 +4,6 @@ import useSWR from 'swr';
 import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useSelector } from 'react-redux';
 import { format, parseISO } from 'date-fns';
 import {
   Button,
@@ -50,9 +49,6 @@ const QuizList = () => {
   const [quizId, setQuizId] = React.useState('');
   const [quizData, setQuizData] = React.useState('');
   const [openQuizModal, setOpenQuizModal] = React.useState(false);
-
-
-  const stateToken = useSelector((state) => state.profile.token);
 
   const { data, mutate } = useSWR('/quiz/available-quizzes');
 
