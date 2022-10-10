@@ -37,3 +37,12 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
+export const getServerSideProps = async (ctx) => {
+  console.log('server running');
+  return {
+    props: {
+      hello: 'lkajsdf'
+    }
+  }
+}

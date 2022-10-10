@@ -1,5 +1,4 @@
 
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import useSWR from 'swr';
@@ -19,12 +18,10 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import Router from "next/router";
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import CountdownTimer from '../../../components/user/CountdownTimer';
 import RadioInputItem from '../../../components/form-components/RadioInputItem';
-import { useBeforeUnload } from "react-use";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -32,7 +29,6 @@ const QuizId = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
   const { quizId } = router.query;
-  const stateToken = useSelector((state) => state.profile.token);
 
   const { data } = useSWR(
     `/quiz/available-single-quiz/${quizId}`);
@@ -43,29 +39,10 @@ const QuizId = () => {
 
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
-  const [isConfirm, setIsConfirm] = useState(true);
-  const [message, setMessage] = useState('Are you sure you want to leave');
 
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
-  // useBeforeUnload(isConfirm, message);
-
-  // useEffect(() => {
-  //   const handler = () => {
-  //     if (isConfirm && !window.confirm(message)) {
-  //       console.log('router rejected');
-  //       throw 'Route Canceled';
-  //     }
-  //   };
-
-  //   Router.events.on('beforeHistoryChange', handler);
-
-  //   return () => {
-  //     Router.events.off('beforeHistoryChange', handler);
-  //   };
-  // }, [isConfirm, message]);
 
   const handleClose = () => {
     setOpen(false);
@@ -73,7 +50,6 @@ const QuizId = () => {
 
   const submitQuizHandler = () => {
     setOpen(false);
-    setIsConfirm(false);
     router.push('/user/quiz/result');
   };
 
@@ -84,7 +60,6 @@ const QuizId = () => {
 
   const timeoutAutoSubmitHandler = () => {
     console.log(answers);
-    setIsConfirm(false);
     router.push('/result');
   };
 

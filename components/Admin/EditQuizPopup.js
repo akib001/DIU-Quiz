@@ -23,8 +23,11 @@ import { useTheme } from '@mui/material/styles';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
 const EditQuizPopup = ({ editQuizData, setOpenEditModal }) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     handleSubmit,
     control,
@@ -71,16 +74,19 @@ const EditQuizPopup = ({ editQuizData, setOpenEditModal }) => {
 
   const onSubmitHandler = async (data) => {
     try {
-      const response = await axios.put(
+      const {data: response, error} = await axios.put(
         `/quiz/update/${editQuizData._id}`,
         { ...data, totalMark: totalMark },
         {
           headers: { Authorization: 'Bearer ' + stateToken },
         }
-      );
+        );
+        enqueueSnackbar(response?.message, {variant: 'success'});
       setOpenEditModal(false);
     } catch (error) {
       console.log(error);
+      enqueueSnackbar(error?.response?.data?.message, {variant: 'error'});
+      setOpenEditModal(false);
     }
   };
 

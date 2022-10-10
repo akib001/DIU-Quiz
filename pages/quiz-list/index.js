@@ -21,6 +21,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import EditQuizPopup from '../../components/Admin/EditQuizPopup';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useSnackbar } from 'notistack';
 
 function createData(
   id,
@@ -56,6 +57,8 @@ const QuizList = () => {
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState('');
   const [editQuizData, setEditQuizData] = React.useState('');
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const stateToken = useSelector((state) => state.profile.token);
 
@@ -97,7 +100,7 @@ const QuizList = () => {
     const { data, error } = await axios.delete(`/quiz/delete/${deleteId}`, {
       headers: { Authorization: 'Bearer ' + stateToken },
     });
-    console.log(data.message);
+    enqueueSnackbar(data.message, {variant: 'success'});
     if (error) {
       alert(error);
     }
@@ -117,7 +120,7 @@ const QuizList = () => {
           item.duration,
           format(new Date(parseISO(item.startTime)), 'dd/MM/yy hh:mm a'),
           format(new Date(parseISO(item.endTime)), 'dd/MM/yy hh:mm a'),
-          item.status,
+          item.status ? 'Active' : 'In Draft',
           format(new Date(parseISO(item.createdAt)), 'dd/MM/yy hh:mm a'),
           format(new Date(parseISO(item.updatedAt)), 'dd/MM/yy hh:mm a')
         );
