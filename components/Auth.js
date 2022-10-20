@@ -24,6 +24,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { profileActions } from '../store/profile-slice';
 import { useRouter } from 'next/router';
+import GoogleIcon from '@mui/icons-material/Google';
 
 const theme = createTheme();
 
@@ -35,7 +36,6 @@ export default function Auth() {
 
   const dispatch = useDispatch();
   const router = useRouter();
-
 
   const {
     handleSubmit,
@@ -101,7 +101,7 @@ export default function Auth() {
         });
         dispatch(profileActions.userLogin(loginRes.data));
         setLoading(false);
-      } catch (error) { 
+      } catch (error) {
         setErrorMessage(error.response?.data.message);
         setLoading(false);
       }
@@ -129,8 +129,8 @@ export default function Auth() {
 
   const handleGoogleSignIn = async () => {
     console.log('google sign in clicked');
-    window.open('http://localhost:8080/auth/google', "_self")
-  }
+    window.open('http://localhost:8080/auth/google', '_self');
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -142,7 +142,8 @@ export default function Auth() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://raw.githubusercontent.com/akib001/DIU-Quiz/master/public/diuQuiz2.png)',
+            backgroundImage:
+              'url(https://raw.githubusercontent.com/akib001/DIU-Quiz/master/public/diuQuiz2.png)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
@@ -245,18 +246,18 @@ export default function Auth() {
                   />
                 )}
               </Box>
-
-              <Box sx={{ position: 'relative' }}>
-                <Button
+              {authMode == 'user' && isSignIn && (
+                  <Button
                     type="button"
+                    startIcon={<GoogleIcon />}
                     fullWidth
                     disabled={false}
                     variant="contained"
                     onClick={handleGoogleSignIn}
-                >
-                  Google Sign in
-                </Button>
-              </Box>
+                  >
+                    Google Sign in
+                  </Button>
+              )}
 
               <Grid container>
                 <Grid item xs>
