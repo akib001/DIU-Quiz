@@ -127,6 +127,11 @@ export default function Auth() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    console.log('google sign in clicked');
+    window.open('http://localhost:8080/auth/google', "_self")
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -239,6 +244,18 @@ export default function Auth() {
                     }}
                   />
                 )}
+              </Box>
+
+              <Box sx={{ position: 'relative' }}>
+                <Button
+                    type="button"
+                    fullWidth
+                    disabled={false}
+                    variant="contained"
+                    onClick={handleGoogleSignIn}
+                >
+                  Google Sign in
+                </Button>
               </Box>
 
               <Grid container>
