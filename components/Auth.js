@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
+  Card,
   CircularProgress,
   Stack,
   ToggleButton,
@@ -23,7 +24,6 @@ import FormInputText from './form-components/FormInputText';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { profileActions } from '../store/profile-slice';
-import { useRouter } from 'next/router';
 import GoogleIcon from '@mui/icons-material/Google';
 
 const theme = createTheme();
@@ -35,7 +35,6 @@ export default function Auth() {
   const [loading, setLoading] = React.useState(false);
 
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const {
     handleSubmit,
@@ -129,7 +128,7 @@ export default function Auth() {
 
   const handleGoogleSignIn = async () => {
     console.log('google sign in clicked');
-    window.open('http://localhost:8080/auth/google', '_self');
+    window.open(`${axios.defaults.baseURL = process.env.NODE_ENV == 'development' ? 'http://localhost:8080' : 'https://diuquiz-server.onrender.com'}/auth/google`, '_self');
   };
 
   return (
@@ -179,7 +178,7 @@ export default function Auth() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              {authMode == 'user'
+              {authMode === 'user'
                 ? isSignIn
                   ? 'User Login'
                   : 'User Sign Up'
@@ -246,7 +245,7 @@ export default function Auth() {
                   />
                 )}
               </Box>
-              {authMode == 'user' && isSignIn && (
+              {authMode === 'user' && isSignIn && (
                   <Button
                     type="button"
                     startIcon={<GoogleIcon />}
@@ -258,6 +257,12 @@ export default function Auth() {
                     Google Sign in
                   </Button>
               )}
+              {authMode !== 'user' && isSignIn && <Card variant='outlined' sx={{backgroundColor: '#cbcbcb', textAlign: 'center'}}>
+                <Typography mt={1} variant="h6" gutterBottom>Admin Demo User:</Typography>
+                <Typography>Username: admin</Typography>
+                <Typography mb={1}>Password: admin1234</Typography>
+              </Card>}
+
 
               <Grid container>
                 <Grid item xs>

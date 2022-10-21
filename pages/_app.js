@@ -7,7 +7,8 @@ import Router from 'next/router';
 import ProgressBar from '@badrap/bar-of-progress';
 import {SnackbarProvider} from "notistack";
 
-axios.defaults.baseURL = 'http://localhost:8080/';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://diuquiz-server.onrender.com';
+
 axios.defaults.withCredentials = true;
 
 const progress = new ProgressBar({
@@ -37,12 +38,3 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
-
-export const getServerSideProps = async (ctx) => {
-  console.log('server running');
-  return {
-    props: {
-      hello: 'lkajsdf'
-    }
-  }
-}
