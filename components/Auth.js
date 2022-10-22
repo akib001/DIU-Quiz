@@ -259,8 +259,8 @@ export default function Auth() {
               )}
               {authMode !== 'user' && isSignIn && <Card variant='outlined' sx={{backgroundColor: '#cbcbcb', textAlign: 'center'}}>
                 <Typography mt={1} variant="h6" gutterBottom>Admin Demo User:</Typography>
-                <Typography>Username: admin</Typography>
-                <Typography mb={1}>Password: admin1234</Typography>
+                <Typography>Email Address: akib@gmail.com</Typography>
+                <Typography mb={1}>Password: akib1234</Typography>
               </Card>}
 
 
