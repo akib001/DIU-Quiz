@@ -36,7 +36,6 @@ import { useSnackbar } from 'notistack';
     const [answers, setAnswers] = useState([]);
     const [cancelQuizPopup, setCancelQuizPopup] = useState(false);
     const [isAutoSubmit, setIsAutoSubmit] = useState(false);
-    const stateToken = useSelector((state) => state.profile.token);
     const [open, setOpen] = React.useState(false);
     const [results, setResults] = React.useState('');
     const theme = useTheme();

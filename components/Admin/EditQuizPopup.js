@@ -68,7 +68,6 @@ const EditQuizPopup = ({ editQuizData, setOpenEditModal }) => {
     name: 'questions',
   });
 
-  const stateToken = useSelector((state) => state.profile.token);
 
   const addNewQuestion = () => appendQuestion();
 
@@ -77,9 +76,6 @@ const EditQuizPopup = ({ editQuizData, setOpenEditModal }) => {
       const {data: response, error} = await axios.put(
         `/quiz/update/${editQuizData._id}`,
         { ...data, totalMark: totalMark },
-        {
-          headers: { Authorization: 'Bearer ' + stateToken },
-        }
         );
         enqueueSnackbar(response?.message, {variant: 'success'});
       setOpenEditModal(false);

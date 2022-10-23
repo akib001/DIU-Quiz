@@ -60,8 +60,6 @@ const QuizList = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const stateToken = useSelector((state) => state.profile.token);
-
   const { data } = useSWR('quiz/admin/fetch-quizzes');
 
   const theme = useTheme();
@@ -97,9 +95,7 @@ const QuizList = () => {
   );
 
   const confirmDeleteHandler = async () => {
-    const { data, error } = await axios.delete(`/quiz/delete/${deleteId}`, {
-      headers: { Authorization: 'Bearer ' + stateToken },
-    });
+    const { data, error } = await axios.delete(`/quiz/delete/${deleteId}`);
     enqueueSnackbar(data.message, {variant: 'success'});
     if (error) {
       alert(error);

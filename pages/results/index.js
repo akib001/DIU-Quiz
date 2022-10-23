@@ -55,8 +55,6 @@ const Results = () => {
 
   const [quizzes, setQuizzes] = React.useState([]);
 
-  const stateToken = useSelector((state) => state.profile.token);
-
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 

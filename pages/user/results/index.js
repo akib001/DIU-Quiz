@@ -48,7 +48,6 @@ const Results = () => {
   const [result, setResult] = React.useState([]);
 
 
-  const stateToken = useSelector((state) => state.profile.token);
   const stateUserId = useSelector((state) => state.profile.userId);
 
   const { data, error } = useSWR(`/quiz/fetch-results/user/${stateUserId}`);

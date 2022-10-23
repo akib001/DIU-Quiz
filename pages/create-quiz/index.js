@@ -69,8 +69,6 @@ const CreateQuiz = () => {
 
   const dispatch = useDispatch();
 
-  const stateToken = useSelector((state) => state.profile.token);
-
   const addNewQuestion = () => appendQuestion();
 
   const onSubmitHandler = async (data) => {
@@ -88,10 +86,7 @@ const CreateQuiz = () => {
       console.log(data);
       response = await axios.post(
         '/quiz/create-quiz',
-        { ...data, totalMark: totalMark },
-        {
-          headers: { Authorization: 'Bearer ' + stateToken },
-        }
+        { ...data, totalMark: totalMark }
       );
       enqueueSnackbar('Quiz created Successfully!', {variant: 'success'});
       handleClose();
