@@ -23,19 +23,33 @@ const profileSlice = createSlice({
     //   state.userLoggedIn = !!state.token;
     // },
 
+    // userLogin(state, action) {
+    //   state.token = action.payload.token;
+    //   state.userId = action.payload.userId;
+    //   state.name = action.payload.name;
+    //   state.email = action.payload.email;
+    //   state.role = action.payload.role;
+    //
+    //   // localStorage.setItem('token', state.token);
+    //   // localStorage.setItem('userId', state.userId);
+    //   // localStorage.setItem('name', state.name);
+    //   // localStorage.setItem('email', state.email);
+    //   // localStorage.setItem('role', state.role);
+    // },
+
     userLogin(state, action) {
       state.token = action.payload.token;
       state.userId = action.payload.userId;
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.role = action.payload.role;
-      
-      // localStorage.setItem('token', state.token);
-      // localStorage.setItem('userId', state.userId);
-      // localStorage.setItem('name', state.name);
-      // localStorage.setItem('email', state.email);
-      // localStorage.setItem('role', state.role);
-    },
+
+      localStorage.setItem('token', state.token);
+      localStorage.setItem('userId', state.userId);
+      localStorage.setItem('name', state.name);
+      localStorage.setItem('email', state.email);
+      localStorage.setItem('role', state.role);
+    }
 
     // userClicked(state) {
     //   state.clicked = true;

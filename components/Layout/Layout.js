@@ -15,40 +15,61 @@ const Layout = (props) => {
   const stateUserRole = useSelector((state) => state.profile.role);
 
   // Beacuse it's a next app we can't run localstorage on redux app it will show an error so to avoid that error
+  // useEffect(() => {
+  //   let retrivedToken;
+  //   let retrivedUserId;
+  //   let retrivedEmail;
+  //   let retrivedName;
+  //   let retrivedRole;
+  //
+  //   const checkAuth = async () => {
+  //     try {
+  //       const { data: authResponse } = await axios.get('/auth/check-auth');
+  //       console.log('authResponse', authResponse);
+  //       retrivedRole = authResponse.role;
+  //       retrivedUserId = authResponse.userId;
+  //       retrivedEmail = authResponse.email;
+  //       retrivedName = authResponse.name;
+  //       if (retrivedRole) {
+  //         dispatch(
+  //           profileActions.userLogin({
+  //             token: retrivedToken,
+  //             userId: retrivedUserId,
+  //             email: retrivedEmail,
+  //             name: retrivedName,
+  //             role: retrivedRole,
+  //           })
+  //         );
+  //         setLoading(false);
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //       setLoading(false);
+  //     }
+  //   };
+  //
+  //   checkAuth();
+  // }, [dispatch]);
+
   useEffect(() => {
-    let retrivedToken;
-    let retrivedUserId;
-    let retrivedEmail;
-    let retrivedName;
-    let retrivedRole;
+    let retrivedToken = localStorage.getItem('token');
+    let retrivedUserId = localStorage.getItem('userId');
+    let retrivedEmail = localStorage.getItem('email');
+    let retrivedName = localStorage.getItem('name');
+    let retrivedRole = localStorage.getItem('role');
 
-    const checkAuth = async () => {
-      try {
-        const { data: authResponse } = await axios.get('/auth/check-auth');
-        console.log('authResponse', authResponse);
-        retrivedRole = authResponse.role;
-        retrivedUserId = authResponse.userId;
-        retrivedEmail = authResponse.email;
-        retrivedName = authResponse.name;
-        if (retrivedRole) {
-          dispatch(
-            profileActions.userLogin({
-              token: retrivedToken,
-              userId: retrivedUserId,
-              email: retrivedEmail,
-              name: retrivedName,
-              role: retrivedRole,
-            })
-          );
-          setLoading(false);
-        }
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
+    if (retrivedToken !== null && retrivedToken !== 'undefined') {
+      dispatch(
+          profileActions.userLogin({
+            token: retrivedToken,
+            userId: retrivedUserId,
+            email: retrivedEmail,
+            name: retrivedName,
+            role: retrivedRole,
+          })
+      );
+    }
+    setLoading(false);
   }, [dispatch]);
 
   return (
