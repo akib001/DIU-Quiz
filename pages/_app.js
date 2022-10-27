@@ -7,7 +7,7 @@ import Router from 'next/router';
 import ProgressBar from '@badrap/bar-of-progress';
 import {SnackbarProvider} from "notistack";
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://diuquiz-server.onrender.com';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://diuquizserver.cyclic.app';
 
 axios.defaults.withCredentials = true;
 

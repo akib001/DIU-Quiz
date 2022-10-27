@@ -20,20 +20,39 @@ const Layout = (props) => {
 
   // Beacuse it's a next app we can't run localstorage on redux app it will show an error so to avoid that error
   useEffect(() => {
-    console.log('check fn', extractRoleFromCookie(document.cookie))
+    let retrivedToken;
+    let retrivedUserId;
+    let retrivedEmail;
+    let retrivedName;
+    let retrivedRole;
 
-    const extractRole = extractRoleFromCookie(document.cookie);
-
-    if (extractRole !== null && extractRole !== 'undefined') {
+    const checkAuth = async () => {
+      try {
+        const { data: authResponse } = await axios.get('/auth/check-auth');
+        console.log('authResponse', authResponse);
+        retrivedRole = authResponse.role;
+        retrivedUserId = authResponse.userId;
+        retrivedEmail = authResponse.email;
+        retrivedName = authResponse.name;
+        if (retrivedRole) {
           dispatch(
-              profileActions.userLogin({
-                role: extractRole,
-              })
+            profileActions.userLogin({
+              token: retrivedToken,
+              userId: retrivedUserId,
+              email: retrivedEmail,
+              name: retrivedName,
+              role: retrivedRole,
+            })
           );
+          setLoading(false);
         }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+    };
 
-    setLoading(false);
-
+    checkAuth();
   }, [dispatch]);
 
 
